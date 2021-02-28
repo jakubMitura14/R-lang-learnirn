@@ -1,0 +1,14 @@
+cheese,honey,milk
+bread,honey,sugar
+butter,honey,sugar,tea
+butter,honey,milk,tea
+bread,butter,cheese
+bread,butter,sugar,tea
+honey,tea
+cheese,milk,tea
+bread,butter,sugar
+butter,honey
+butter,cheese,milk,sugar
+bread,butter,sugar
+bread,butter,honey,sugar
+butter,cheese,honey,milk,tea

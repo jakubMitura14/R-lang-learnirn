@@ -1,0 +1,15 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+Ctrl+Shift+K* to preview the HTML file
+
+wybrana wskazana zmienna - c
+```{r}
+chosen  <- "c"
+mdata <- read.csv(file="data.csv", header=TRUE, sep=",")
+mdata[[chosen]]
+```
+

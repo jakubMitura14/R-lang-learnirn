@@ -1,0 +1,15 @@
+@relation wisconsin
+@attribute ClumpThickness integer [1, 10]
+@attribute CellSize integer [1, 10]
+@attribute CellShape integer [1, 10]
+@attribute MarginalAdhesion integer [1, 10]
+@attribute EpithelialSize integer [1, 10]
+@attribute BareNuclei integer [1, 10]
+@attribute BlandChromatin integer [1, 10]
+@attribute NormalNucleoli integer [1, 10]
+@attribute Mitoses integer [1, 10]
+@attribute Class {2,4}
+@inputs ClumpThickness, CellSize, CellShape, MarginalAdhesion, EpithelialSize, BareNuclei, BlandChromatin, NormalNucleoli, Mitoses
+@outputs Class
+
+This dataset contains cases from a study that was conducted at the University of Wisconsin Hospitals, Madison, about patients who had undergone surgery for breast cancer. The task is to determine if the detected tumor is benign (2) os malignant (4). 

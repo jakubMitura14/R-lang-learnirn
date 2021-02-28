@@ -1,0 +1,50 @@
+Source:
+
+Creators: Marek Lubicz (1), Konrad Pawelczyk (2), Adam Rzechonek (2), Jerzy Kolodziej (2)
+-- (1) Wroclaw University of Technology, wybrzeze Wyspianskiego 27, 50-370, Wroclaw, Poland
+-- (2) Wroclaw Medical University, wybrzeze L. Pasteura 1, 50-367 Wroclaw, Poland
+
+Donor: Maciej Zieba (maciej.zieba '@' pwr.wroc.pl), Jakub M. Tomczak (jakub.tomczak '@' pwr.wroc.pl), (+48) 71 320 44 53
+
+Date: November, 2013
+
+Data Set Information:
+
+The data was collected retrospectively at Wroclaw Thoracic Surgery Centre for patients who underwent major lung resections for primary lung cancer in the years 2007–2011. The Centre is associated with the Department of Thoracic Surgery of the Medical University of Wroclaw and Lower-Silesian Centre for Pulmonary Diseases, Poland, while the research database constitutes a part of the National Lung Cancer Registry, administered by the Institute of Tuberculosis and Pulmonary Diseases in Warsaw, Poland.
+
+Attribute Information:
+
+1. DGN: Diagnosis - specific combination of ICD-10 codes for primary and secondary as well multiple tumours if any (DGN3,DGN2,DGN4,DGN6,DGN5,DGN8,DGN1)
+2. PRE4: Forced vital capacity - FVC (numeric)
+3. PRE5: Volume that has been exhaled at the end of the first second of forced expiration - FEV1 (numeric)
+4. PRE6: Performance status - Zubrod scale (PRZ2,PRZ1,PRZ0)
+5. PRE7: Pain before surgery (T,F) (1,0)
+6. PRE8: Haemoptysis before surgery (T,F)(1,0)
+7. PRE9: Dyspnoea before surgery (T,F)(1,0)
+8. PRE10: Cough before surgery (T,F)(1,0)
+9. PRE11: Weakness before surgery (T,F)(1,0)
+10. PRE14: T in clinical TNM - size of the original tumour, from OC11 (smallest) to OC14 (largest) (OC11,OC14,OC12,OC13)
+11. PRE17: Type 2 DM - diabetes mellitus (T,F)(1,0)
+12. PRE19: MI up to 6 months (T,F)(1,0)
+13. PRE25: PAD - peripheral arterial diseases (T,F)(1,0)
+14. PRE30: Smoking (T,F)(1,0)
+15. PRE32: Asthma (T,F)(1,0)
+16. AGE: Age at surgery (numeric)
+17. Risk1Y: 1 year survival period - (c1) True value if died (T,F)
+
+Class Distribution: the class value (Risk1Y) is binary valued.
+
+Citation Request:
+
+Zięba, M., Tomczak, J. M., Lubicz, M., & Świątek, J. (2013). Boosted SVM for extracting rules from imbalanced data in application to prediction of the post-operative life expectancy in the lung cancer patients. Applied Soft Computing. [Web Link]
+
+BibTeX:
+
+@article{zieba2013boosted,
+title={Boosted SVM for extracting rules from imbalanced data in application to prediction of the post-operative life expectancy in the lung cancer patients},
+author={Zi{k{e}}ba, Maciej and Tomczak, Jakub M and Lubicz, Marek and {'S}wi{k{a}}tek, Jerzy},
+journal={Applied Soft Computing},
+year={2013},
+publisher={Elsevier},
+doi={[Web Link]}
+}

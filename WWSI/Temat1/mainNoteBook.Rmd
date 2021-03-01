@@ -1,15 +1,101 @@
 ---
-title: "R Notebook"
+title: "Zadanie 1 "
 output: html_notebook
 ---
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
-Ctrl+Shift+K* to preview the HTML file
-
-wybrana wskazana zmienna - c
+wybrana wskazana zmienna - c; poniżej w polu columndata zgromadzone infomracje na temat danej zmiennej
 ```{r}
 chosen  <- "c"
 mdata <- read.csv(file="data.csv", header=TRUE, sep=",")
-mdata[[chosen]]
+columndata <- mdata[[chosen]]
+```
+
+Obliczyć wartość średnią i odchylenie standardowe po usunięciu brakujących (NA) wartości.
+
+```{r}
+noNa<-columndata[complete.cases(columndata)]
+print('mean')
+print(mean(noNa))
+print('standard deviation')
+print(sqrt(var(noNa)))
+```
+Narysować histogram. 
+```{r}
+hist(noNa)
+```
+
+2. Zastąpić brakujące wartości wartościami średnimi obliczonymi w punkcie 1. 
+
+```{r}
+meanFilled <- ifelse(is.na(columndata), mean(columndata, na.rm=TRUE), columndata)
+```
+
+Narysować histogram
+
+```{r}
+hist(meanFilled)
+```
+Obliczono  średnią i odchylenie standardowe danych gdzie wartości Na uzupełniono średnią .
+```{r}
+print('mean')
+print(mean(meanFilled))
+print('standard deviation')
+print(sqrt(var(meanFilled)))
+```
+Porównano wyniki z punktem 1
+```{r}
+print('srednia punkt 1 ')
+print(mean(noNa))
+print('srednia punkt 2')
+print(mean(meanFilled))
+
+print('odchylenie standardowe punkt 1')
+print(sqrt(var(noNa)))
+print('odchylenie standardowe punkt 2')
+print(sqrt(var(meanFilled)))
+```
+3.Zastąpiono brakujące wartości wartościami generowanymi losowo zgodnie z obserwowanym
+rozkładem zmiennej. 
+
+
+```{r}
+randomFill<-columndata
+ for(i in seq_along(columndata)){ randomFill[i]<- ifelse(is.na(columndata[i]), sample(na.omit(columndata),1), columndata[i]) }
+randomFill 
+
+```
+
+Narysowano histogram. 
+
+
+```{r}
+hist(randomFill)
+```
+Obliczono średnią i odchylenie standardowe. 
+
+
+```{r}
+print('mean')
+print(mean(randomFill))
+print('standard deviation')
+print(sqrt(var(randomFill)))
+```
+
+Porównano wyniki z wynikami z punktów 1 i 2. 
+
+```{r}
+print('srednia punkt 1 ')
+print(mean(noNa))
+print('srednia punkt 2')
+print(mean(meanFilled))
+print('srednia punkt 3')
+print(mean(randomFill))
+
+print('odchylenie standardowe punkt 1')
+print(sqrt(var(noNa)))
+print('odchylenie standardowe punkt 2')
+print(sqrt(var(meanFilled)))
+print('odchylenie standardowe punkt 3')
+print(sqrt(var(randomFill)))
 ```
 

@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/732584/967cc3c1bab14104b2dd828b384f2e84
+bundleId: https://api.rpubs.com/api/v1/document/732584/967cc3c1bab14104b2dd828b384f2e84
+url: http://rpubs.com/jagiellonczyk/732584
+when: 1614621425.04992

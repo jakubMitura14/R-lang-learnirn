@@ -1,0 +1,144 @@
+---
+title: "Zadanie 2"
+output: html_notebook
+---
+przydział 
+weight_3,
+acceleration_3
+
+
+```{r}
+library(tidyverse)
+library(ggpubr)
+
+
+```
+
+
+
+```{r}
+## tworzymy obiekty zawierajace dane na temat danych
+body_mass_index <- read_csv("body_mass_index.csv")
+cars_acceleration <- read_csv("cars_acceleration.csv")
+
+```
+
+
+
+
+```{r}
+
+
+h1<-  ggplot(cars_acceleration,  aes(x=weight_3)) + 
+  geom_histogram(binwidth=20)
+
+h2<-  ggplot(cars_acceleration,  aes(x=acceleration_3)) + 
+  geom_histogram(binwidth=1)
+
+s1 <-  ggplot(cars_acceleration,  aes(x=weight_3, y = acceleration_3)) + 
+  geom_point()
+
+
+ggarrange(h1, h2, s1, nrow = 3)
+```
+Sprawdź, czy wartości wskazane w punkcie 1 są obserwacjami odstającymi używając:
+a. metody standaryzacji (the Z-score method)
+b. metody rozstępu międzykwartylowego (the IQR method)
+```{r}
+iqrAcc<- IQR(cars_acceleration$acceleration_3)## liczymy interquantile range dla przyspieszenia
+iqrWeight<- IQR(cars_acceleration$weight_3) ## liczymy interquantile range dla masy
+
+lqAcc<- quantile(cars_acceleration$acceleration_3, 0.25) ##  0.25 quantile  dla przyśpieszenia
+lqrmass<- quantile(cars_acceleration$weight_3, 0.25) ##  0.25r quantile  dla masy
+
+uqAcc<- quantile(cars_acceleration$acceleration_3, 0.75) ##  0.75 quantile  dla przyśpieszenia
+uqrmass<- quantile(cars_acceleration$weight_3, 0.75) ##  0.75r quantile  dla masy
+
+
+sdAcc <- sd(cars_acceleration$acceleration_3) ## odchylenie standardowe dla przyspieszenia
+sdmas <- sd(cars_acceleration$weight_3)## odchylenie standardowe dla masy
+
+mAcc <- mean(cars_acceleration$acceleration_3)## średnia dla przyspieszenia
+mmass <- mean(cars_acceleration$weight_3)## średnia dla masy
+
+## funkcja oblicza z gdy dane sa odchylenie standardowe , średnia danej funkcji oraz wartość z tej dystrybucji, zwraca prawde gdy wartosc jest powyzej 3 lub poniżej -3
+zScore <-function(sd,meann, value) {
+ z<-((value- meann)/sd)
+ return  (z>3 | z<(-3) )
+}
+
+
+
+## za pomoca funkcji mutate dodamy kolumny liczące czy dana wartość jest ponad 1.5 IQR  lub Z score poniżej lub poniżej 3 dpowiednio dla przyśpieszenia i masy
+f <- cars_acceleration %>%  
+  select(acceleration_3,weight_3 )  %>% ## wybieramy tylko te kolumny które nas interesują
+  mutate(IQRAcceleration = (acceleration_3>(uqAcc+(1.5*iqrAcc) ) | acceleration_3<(lqAcc -(1.5 *iqrAcc ))))  %>% ## sprawdzamy czy pryśpieszenie jest ponad lub poniżej 25 centylem
+  mutate(IQRweight = (weight_3>(uqrmass+(1.5*uqrmass) )  | weight_3<(lqrmass -(1.5 *iqrWeight )) ))%>%  ## sprawdzamy czy masa jest ponad lub poniżej 25 centylem
+ add_column(zAcc = cars_acceleration$acceleration_3 %>% map(~zScore(sdAcc,mAcc, .x )) %>% flatten_lgl()  ) %>% ## sprawdzamy czy przyśpieszenie jest ponad lub 3 współczynniki Z
+ add_column(zWeight =cars_acceleration$weight_3 %>%map( ~zScore(sdmas,mmass, .x) ) %>% flatten_lgl()  )   ## sprawdzamy czy masa jest ponad lub 3 współczynniki Z
+
+
+
+
+
+hWZ<-  ggplot(f,  aes(x=weight_3, color =zWeight ) ) + 
+  geom_histogram(binwidth=20)
+
+hWIQR<-  ggplot(f,  aes(x=weight_3, color =IQRweight ) ) + 
+  geom_histogram(binwidth=20)
+
+
+
+
+hAccZ<-  ggplot(f,  aes(x=acceleration_3, color =zAcc ) ) + 
+  geom_histogram(binwidth=1)
+
+hAccIQR<-  ggplot(f,  aes(x=acceleration_3, color =IQRAcceleration ) ) + 
+  geom_histogram(binwidth=1)
+
+
+## 
+ggarrange(hWZ, hWIQR, hAccZ,hAccIQR, nrow = 4)
+
+
+```
+Prześledź, jak obserwacje odstające wpływają na wartości średniej i mediany. W tym celu:
+a. Oblicz średnią i medianę dla danych z i bez obserwacji odstających.
+b. Stwierdź, która z miar tendencji centralnej, średnia czy mediana, jest bardziej wrażliwa
+na obecność obserwacji odstających. Spróbuj wyjaśnić dlaczego. 
+
+```{r}
+meanWithOutliersAcc <- mean(cars_acceleration$acceleration_3 ) # średnia dla przyspieszenia z wartościami odstajacymi
+meanWithOUTOutliersAcc <-f %>% filter(zAcc==FALSE) %>% .$acceleration_3 %>% mean() # średnia bez wartości odstajacych wg wspolczynnika Z
+
+meanWithOutliersMass <- mean(cars_acceleration$weight_3 ) # średnia dla masy z wartościami odstajacymi
+meanWithOUTOutliersMass <-f %>% filter(zAcc==FALSE) %>% .$weight_3 %>% mean() # średnia bez wartości odstajacych wg wspolczynnika Z
+
+
+medianWithOutliersAcc <- median(cars_acceleration$acceleration_3 ) # mediana dla przyspieszenia z wartościami odstajacymi
+medianWithOUTOutliersAcc <-f %>% filter(zAcc==FALSE) %>% .$acceleration_3 %>% median() # mediana  bez wartości odstajacych wg wspolczynnika Z
+
+medianWithOutliersMass <- median(cars_acceleration$weight_3 ) # mediana  dla masy z wartościami odstajacymi
+medianWithOUTOutliersMass <-f %>% filter(zAcc==FALSE) %>% .$weight_3 %>% median() # mediana  bez wartości odstajacych wg wspolczynnika Z
+
+
+
+paste(
+  "meanWithOutliersAcc ",toString(meanWithOutliersAcc),
+  " meanWithOUTOutliersAcc ", toString(meanWithOUTOutliersAcc) ,
+  "  meanWithOutliersMass  ", toString(meanWithOutliersMass),
+  "  meanWithOUTOutliersMass  ", toString(meanWithOUTOutliersMass) ,
+  " medianWithOutliersAcc ", toString(medianWithOutliersAcc),
+  " medianWithOUTOutliersAcc  ", toString(medianWithOUTOutliersAcc),
+  "  medianWithOutliersMass  " , toString(medianWithOutliersMass),
+  "  medianWithOUTOutliersMass ", toString(medianWithOUTOutliersMass) )
+
+
+
+
+
+## 
+```
+
+mediana jest znacznie mniej czuła na wartości odstające gdyż podczas jej liczenia nie jest istotna jak "dlaeko jest taka wartość odstajaca" mediana bedzie taka sama niezaleznie czy ta wwartość odstajaca bedzie 2 czy 10 odchyleń standardowych od sredniej natomiast ma to znacznie dla średniej
+

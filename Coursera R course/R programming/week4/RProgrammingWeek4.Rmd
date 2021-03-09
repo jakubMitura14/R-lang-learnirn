@@ -1,0 +1,115 @@
+---
+title: "week 4 programming"
+output: html_notebook
+---
+
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+```{r}
+library(tidyverse)
+```
+
+
+
+```{r}
+## Read outcome data
+## Check that state and outcome are valid
+## Return hospital name in that state with lowest 30-day death
+## rate
+best <- function(state, outt ) {
+  if( state %in%  outcome_of_care_measures$State){
+
+    
+     outcome_of_care_measures %>% add_column(ha = parse_number(outcome_of_care_measures[[outt]]))  %>% arrange(ha,`Hospital Name`) %>% filter(State ==state ) %>% select(`Hospital Name`,outt,ha )
+
+
+  }
+  else{
+    stop("invalid state")
+    
+  }
+}
+
+best("AK", "Hospital 30-Day Death (Mortality) Rates from Pneumonia" )
+##`Hospital 30-Day Death (Mortality) Rates from Heart Attack`
+##`Hospital 30-Day Death (Mortality) Rates from Heart Failure`
+##`Hospital 30-Day Death (Mortality) Rates from Pneumonia`
+
+```
+
+
+
+##best("MD", "heart attack", outcome)
+zz <- paste("Hospital 30-Day Death (Mortality) Rates from ","heart attack" )
+
+
+outcome %>% filter(State == "TX" ) %>% mutate (ha = parse_number(`Hospital 30-Day Death (Mortality) Rates from Heart Attack`)) %>% arrange(ha) %>% select(`Hospital Name`,ha )
+
+
+`Hospital 30-Day Death (Mortality) Rates from Heart Attack`
+`Hospital 30-Day Death (Mortality) Rates from Heart Failure`
+`Hospital 30-Day Death (Mortality) Rates from Pneumonia`
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```{r}
+outcome_of_care_measures 
+
+```
+
+
+
+```{r}
+rankhospital <- function(state, outt, num = "best") {
+## Read outcome data
+## Check that state and outcome are valid
+## Return hospital name in that state with the given rank
+## 30-day death rate
+  outcome_of_care_measures %>% add_column(ha = parse_number(outcome_of_care_measures[[outt]]))  %>% filter(State ==state ) %>% arrange(ha,`Hospital Name`) %>% select(`Hospital Name`,outt,ha )
+  
+}
+rankhospital("TX", "Hospital 30-Day Death (Mortality) Rates from Pneumonia" , outcome)
+
+
+```
+
+
+```{r}
+rankall <- function(outt, numm ) {
+## Read outcome data
+## Check that state and outcome are valid
+## Return hospital name in that state with the given rank
+## 30-day death rate   %>% filter(ha ==numm )
+  outcome_of_care_measures %>% add_column(ha = parse_number(outcome_of_care_measures[[outt]]))  %>% arrange(desc(ha)) %>% select(State,`Hospital Name`,outt,ha )
+  
+}
+rankall( "Hospital 30-Day Death (Mortality) Rates from Heart Attack" , 20)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

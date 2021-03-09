@@ -1,0 +1,70 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(datasets)
+data(iris)
+library(tidyverse)
+library(datasets)
+data(mtcars)
+
+```
+
+
+
+```{r}
+as_tibble(iris) %>% filter(Species == "virginica") %>% .$Sepal.Length %>% mean()
+
+```
+
+```{r}
+mtcars<- as_tibble(mtcars)
+
+print(lapply(mtcars, mean))
+
+
+print(split(mtcars, mtcars$cyl))
+
+
+print(sapply(mtcars, cyl, mean))
+
+
+print(tapply(mtcars$mpg, mtcars$cyl, mean))
+
+
+print(tapply(mtcars$cyl, mtcars$mpg, mean))
+
+
+print(sapply(split(mtcars$mpg, mtcars$cyl), mean))
+
+
+print(with(mtcars, tapply(mpg, cyl, mean)))
+
+
+print(mean(mtcars$mpg, mtcars$cyl))
+
+
+print(apply(mtcars, 2, mean))
+
+
+
+```
+Question 4
+Continuing with the 'mtcars' dataset from the previous Question, what is the absolute difference between the average horsepower of 4-cylinder cars and the average horsepower of 8-cylinder cars?
+
+```{r}
+FourCyl <- mtcars %>% filter (cyl == 4) %>% .$hp  %>%mean()
+EightCyl <- mtcars %>% filter (cyl == 8) %>% .$hp %>% mean()
+FourCyl -EightCyl
+
+```
+
+
+```{r}
+
+debug(ls)
+```

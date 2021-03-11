@@ -1,0 +1,43 @@
+---
+title: "Zadanie 4"
+output: html_notebook
+---
+
+Przydział
+rozmiar zbioru testowego= 30, liczba podzbiorów = 14
+
+
+```{r}
+library(tidyverse)
+library(class) 
+seeds <- read_csv("seeds.csv")
+
+```
+
+Walidacja krzyżowa z dwoma zbiorami: podziel zbiór danych na zbiór trenujący i zbiór testowy o
+rozmiarze podanym w pliku “przydziały.docs”. Porównaj wyniki klasyfikatora z pradziwymi
+wartościami zmiennej celu. Pokaż macierz pomyłek i wskaż źle sklasyfikowane rekordy. Zapisz
+poziom błędu.
+
+```{r}
+##rozmiar zbioru testowego= 30
+test_indices<-c(1:30)  # indeksy zbioru testowego
+d.test <- seeds[test_indices,1:7]#musimy usunac ostatnia kolumne bo to ja algorytm ma się nauczyć ... 
+d.test.class<- seeds[test_indices,8]    #właściwa klasa w grupie testowej
+d.train <- seeds[-test_indices, 1:7]  # wszystkie indeksy poza  testowymi - grupa testowa
+d.train.class <- seeds[-test_indices, 8]  # właściwa klasa dla grupy treningowej
+
+knn.result <- knn(d.train, d.test, d.train.class, k = 1) # uruchomienie algorytmu k means
+
+t<-table(d.test.class,knn.result) ## tworzymy tabele podsumowująca wyniki algorytmu
+err_rate<-mean(knn.result!=d.test.class) ## określamy jaki jest błąd
+
+cat("\n\nerror rate = ",err_rate,"\n\n")
+print(t)
+
+
+
+
+
+```
+

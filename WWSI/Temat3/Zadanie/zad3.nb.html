@@ -222,15 +222,56 @@ pre code {
 <p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Ctrl+Shift+Enter</em>. Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by pressing <em>Ctrl+Alt+I</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5mMTAgPC0gcmVhZF9jc3YoXCJleDNzdHVkZW50cy9mMTAuY3N2XCIsIGNvbF9uYW1lcz1GQUxTRSApXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)
-f10 &lt;- read_csv(&quot;ex3students/f10.csv&quot;, col_names=FALSE )</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
+<pre class="r"><code>library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG4tLSBDb2x1bW4gc3BlY2lmaWNhdGlvbiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbmNvbHMoXG4gIFgxID0gY29sX2NoYXJhY3RlcigpXG4pXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxuLS0gQXR0YWNoaW5nIHBhY2thZ2VzIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gdGlkeXZlcnNlIDEuMy4wIC0tXG52IGdncGxvdDIgMy4zLjMgICAgIHYgcHVycnIgICAwLjMuNFxudiB0aWJibGUgIDMuMC42ICAgICB2IGRwbHlyICAgMS4wLjRcbnYgdGlkeXIgICAxLjEuMiAgICAgdiBzdHJpbmdyIDEuNC4wXG52IHJlYWRyICAgMS40LjAgICAgIHYgZm9yY2F0cyAwLjUuMVxuLS0gQ29uZmxpY3RzIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gdGlkeXZlcnNlX2NvbmZsaWN0cygpIC0tXG54IGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbnggZHBseXI6OmxhZygpICAgIG1hc2tzIHN0YXRzOjpsYWcoKVxuIn0= -->
+<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
+  method         from
+  print.tbl_lazy     
+  print.tbl_sql      
+-- Attaching packages ---------------------------------------------------------------------------------------------------------------- tidyverse 1.3.0 --
+v ggplot2 3.3.3     v purrr   0.3.4
+v tibble  3.0.6     v dplyr   1.0.4
+v tidyr   1.1.2     v stringr 1.4.0
+v readr   1.4.0     v forcats 0.5.1
+-- Conflicts ------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZjEwIDwtIHJlYWRfY3N2KFwiZXgzc3R1ZGVudHMvZjEwLmNzdlwiLCBjb2xfbmFtZXM9RkFMU0UgKVxuYGBgIn0= -->
+<pre class="r"><code>f10 &lt;- read_csv(&quot;ex3students/f10.csv&quot;, col_names=FALSE )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4tLSBDb2x1bW4gc3BlY2lmaWNhdGlvbiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbmNvbHMoXG4gIFgxID0gY29sX2NoYXJhY3RlcigpXG4pXG4ifQ== -->
 <pre><code>
--- Column specification ---------------------------------------------
+-- Column specification ---------------------------------------------------------------------------------------------------------------------------------
 cols(
   X1 = col_character()
+)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuem9vIDwtIHJlYWRfY3N2KFwiZXgzc3R1ZGVudHMvem9vLmNzdlwiKVxuYGBgIn0= -->
+<pre class="r"><code>zoo &lt;- read_csv(&quot;ex3students/zoo.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4tLSBDb2x1bW4gc3BlY2lmaWNhdGlvbiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbmNvbHMoXG4gIGhhaXIgPSBjb2xfZG91YmxlKCksXG4gIGZlYXRoZXJzID0gY29sX2RvdWJsZSgpLFxuICBlZ2dzID0gY29sX2RvdWJsZSgpLFxuICBtaWxrID0gY29sX2RvdWJsZSgpLFxuICBhaXJib3JuZSA9IGNvbF9kb3VibGUoKSxcbiAgYXF1YXRpYyA9IGNvbF9kb3VibGUoKSxcbiAgcHJlZGF0b3IgPSBjb2xfZG91YmxlKCksXG4gIHRvb3RoZWQgPSBjb2xfZG91YmxlKCksXG4gIGJhY2tib25lID0gY29sX2RvdWJsZSgpLFxuICBicmVhdGhlcyA9IGNvbF9kb3VibGUoKSxcbiAgdmVub21vdXMgPSBjb2xfZG91YmxlKCksXG4gIGZpbnMgPSBjb2xfZG91YmxlKCksXG4gIGxlZ3MgPSBjb2xfZG91YmxlKCksXG4gIHRhaWwgPSBjb2xfZG91YmxlKCksXG4gIGRvbWVzdGljID0gY29sX2RvdWJsZSgpLFxuICBjYXRzaXplID0gY29sX2RvdWJsZSgpXG4pXG4ifQ== -->
+<pre><code>
+-- Column specification ---------------------------------------------------------------------------------------------------------------------------------
+cols(
+  hair = col_double(),
+  feathers = col_double(),
+  eggs = col_double(),
+  milk = col_double(),
+  airborne = col_double(),
+  aquatic = col_double(),
+  predator = col_double(),
+  toothed = col_double(),
+  backbone = col_double(),
+  breathes = col_double(),
+  venomous = col_double(),
+  fins = col_double(),
+  legs = col_double(),
+  tail = col_double(),
+  domestic = col_double(),
+  catsize = col_double()
 )</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
@@ -242,92 +283,33 @@ cols(
 <pre class="r"><code>numbs &lt;- flatten_dbl(map(f10$X1, parse_number))
 hist(numbs)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-plot-begin eyJoZWlnaHQiOjM1OS43MDMzLCJ3aWR0aCI6NTgyLCJzaXplX2JlaGF2aW9yIjowLCJjb25kaXRpb25zIjpbXX0= -->
-<p><img src="data:image/png;base64,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" /></p>
-<!-- rnb-plot-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxua208LWttZWFucyhudW1icywyLCBpdGVyLm1heCA9IDEpXG5TU0JvdmVyVFNTUHJpbTwtIGttJGJldHdlZW5zcyAva20kdG90c3NcblxuZXZhbHNzIDwtIGMoU1NCb3ZlclRTU1ByaW0pIFxuXG5teWttPC0gZnVuY3Rpb24oIGNlbnRyb2lkcykge1xua21tPC1rbWVhbnMobnVtYnMsMixpdGVyLm1heCA9IDEsY2VudGVycz0gY2VudHJvaWRzKVxuU1NCb3ZlclRTUzwtIChrbW0kYmV0d2VlbnNzIC9rbW0kdG90c3MpXG5ldmFsc3M8PC0gYyhldmFsc3MsIFNTQm92ZXJUU1MpXG5rbW0kY2VudGVyc1xufVxuXG5jZW50cjwta20kY2VudGVyc1xuZm9yIChpIGluIDE6NCl7XG4gIHByaW50KHRvU3RyaW5nKGNlbnRyKSlcbiBjZW50cjw8LSBteWttKGNlbnRyKVxufVxuYGBgIn0= -->
-<pre class="r"><code>km&lt;-kmeans(numbs,2, iter.max = 1)
-SSBoverTSSPrim&lt;- km$betweenss /km$totss
-
-evalss &lt;- c(SSBoverTSSPrim) 
-
-mykm&lt;- function( centroids) {
-kmm&lt;-kmeans(numbs,2,iter.max = 1,centers= centroids)
-SSBoverTSS&lt;- (kmm$betweenss /kmm$totss)
-evalss&lt;&lt;- c(evalss, SSBoverTSS)
-kmm$centers
-}
-
-centr&lt;-km$centers
-for (i in 1:4){
-  print(toString(centr))
- centr&lt;&lt;- mykm(centr)
-}</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiODcuNjAyMjY1LCAtNTIuNjA2ODM0XCJcblsxXSBcIjg3LjYwMjI2NSwgLTUyLjYwNjgzNFwiXG5bMV0gXCI4Ny42MDIyNjUsIC01Mi42MDY4MzRcIlxuWzFdIFwiODcuNjAyMjY1LCAtNTIuNjA2ODM0XCJcbiJ9 -->
-<pre><code>[1] &quot;87.602265, -52.606834&quot;
-[1] &quot;87.602265, -52.606834&quot;
-[1] &quot;87.602265, -52.606834&quot;
-[1] &quot;87.602265, -52.606834&quot;</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZXZhbHNzXG5gYGAifQ== -->
-<pre class="r"><code>evalss</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuOTczNjE5OSAwLjk3MzYxOTkgMC45NzM2MTk5IDAuOTczNjE5OSAwLjk3MzYxOTlcbiJ9 -->
-<pre><code>[1] 0.9736199 0.9736199 0.9736199 0.9736199 0.9736199</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyNwcmludCh0b1N0cmluZyhwYXN0ZShcIlNTQi9UU1MgXCIgLFNTQm92ZXJUU1MpKSlcblxuXG5gYGAifQ== -->
-<pre class="r"><code>##print(toString(paste(&quot;SSB/TSS &quot; ,SSBoverTSS)))
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxua208LWttZWFucyhudW1icywyLCBpdGVyLm1heCA9IDIwKVxuXG5cbmBgYCJ9 -->
+<pre class="r"><code>km&lt;-kmeans(numbs,2, iter.max = 20)
 </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxua208LWttZWFucyhudW1icywyLCBpdGVyLm1heCA9IDEpXG5TU0JvdmVyVFNTUHJpbTwtIGttJGJldHdlZW5zcyAva20kdG90c3NcblxuY2VudHI8LWttJGNlbnRlcnNcblxuZXZhbHNzIDwtIGMoU1NCb3ZlclRTU1ByaW0pIFxuXG5rbTE8LWttZWFucyhudW1icywyLGl0ZXIubWF4ID0gMSxjZW50ZXJzPSBrbSRjZW50ZXJzKVxuU1NCb3ZlclRTUzwtIChrbTEkYmV0d2VlbnNzIC9rbTEkdG90c3MpXG5ldmFsc3M8PC0gYyhldmFsc3MsIFNTQm92ZXJUU1MpXG5cbmttMjwta21lYW5zKG51bWJzLDIsaXRlci5tYXggPSAxLGNlbnRlcnM9IGttMSRjZW50ZXJzKVxuU1NCb3ZlclRTUzwtIChrbTIkYmV0d2VlbnNzIC9rbTIkdG90c3MpXG5ldmFsc3M8PC0gYyhldmFsc3MsIFNTQm92ZXJUU1MpXG5cblxuZXZhbHNzXG5gYGAifQ== -->
-<pre class="r"><code>km&lt;-kmeans(numbs,2, iter.max = 1)
-SSBoverTSSPrim&lt;- km$betweenss /km$totss
-
-centr&lt;-km$centers
-
-evalss &lt;- c(SSBoverTSSPrim) 
-
-km1&lt;-kmeans(numbs,2,iter.max = 1,centers= km$centers)
-SSBoverTSS&lt;- (km1$betweenss /km1$totss)
-evalss&lt;&lt;- c(evalss, SSBoverTSS)
-
-km2&lt;-kmeans(numbs,2,iter.max = 1,centers= km1$centers)
-SSBoverTSS&lt;- (km2$betweenss /km2$totss)
-evalss&lt;&lt;- c(evalss, SSBoverTSS)
-
-
-evalss</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>PlottingExample <a href="https://stackoverflow.com/questions/22916337/getting-the-coordinates-of-every-observation-at-each-iteration-of-kmeans-in-r" class="uri">https://stackoverflow.com/questions/22916337/getting-the-coordinates-of-every-observation-at-each-iteration-of-kmeans-in-r</a></p>
-<p>set.seed(1) clus.1 &lt;- kmeans(iris[,1:2],5,iter.max=1) clus.2 &lt;- kmeans(iris[,1:2],centers=clus.1<span class="math inline">\(centers,iter.max=1) clus.3 &lt;- kmeans(iris[,1:2],centers=clus.2\)</span>centers,iter.max=1)</p>
-<p>changing &lt;- which(apply(cbind(clus.1<span class="math inline">\(cluster,clus.2\)</span>cluster,clus.3<span class="math inline">\(cluster),1,sd)&gt;0) changing opar &lt;- par(mfrow=c(1,3))  plot(iris[,c(1,2)],col=clus.1\)</span>cluster,pch=19,main=“Iteration 1”) points(iris[changing,c(1,2)],pch=21,cex=2) plot(iris[,c(1,2)],col=clus.2<span class="math inline">\(cluster,pch=19,main=&quot;Iteration 2&quot;)  points(iris[changing,c(1,2)],pch=21,cex=2)  plot(iris[,c(1,2)],col=clus.3\)</span>cluster,pch=19,main=“Iteration 3”) points(iris[changing,c(1,2)],pch=21,cex=2) par(opar)</p>
+<p>Za każdą iteracją</p>
+<p>Cluster means: [,1] 1 -52.60683 2 87.60226</p>
+<p>(between_SS / total_SS = 97.4 %)</p>
 <p>Plik “zoo.csv” zawiera zmienne opisujące 7 typów zwierząt: ssaki, ryby, ptaki, bezkręgowce, owady, płazy i gady. Wyznaczyć grupy w zbiorze danych “zoo.csv” używając algorytmu kśrednich. Porównać otrzymane wyniki ze znaną klasyfikacją dostępną w pliku “zoo_full.xlsx” (w ostatniej kolumnie “type”). Które typy zwierząt były najczęściej mylone?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5rbWVhbnMoem9vKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5rbWVhbnMoem9vLCBjZW50ZXJzID0gNylcblxuYGBgIn0= -->
 <pre class="r"><code>
-kmeans(zoo)</code></pre>
+kmeans(zoo, centers = 7)
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4ga21lYW5zKHpvbykgOiAnY2VudGVycycgbXVzdCBiZSBhIG51bWJlciBvciBhIG1hdHJpeFxuIn0= -->
-<pre><code>Error in kmeans(zoo) : &#39;centers&#39; must be a number or a matrix</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Przeprowadzono ręczną analize pokazaną <a href="https://docs.google.com/spreadsheets/d/1HvvOR3xo5mwljiULf23ch3WIkJ8xcOlekf4rnxsNtbU/edit?usp=sharing" class="uri">https://docs.google.com/spreadsheets/d/1HvvOR3xo5mwljiULf23ch3WIkJ8xcOlekf4rnxsNtbU/edit?usp=sharing</a> i najczęstsze błędy są w klasie invertebrae</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlphZGFuaWUgMyINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCk5vdGF0a2kNCg0KRm9yIG9wdGltYWwgcGVyZm9ybWFuY2UsIGNsdXN0ZXJpbmcgYWxnb3JpdGhtcywgcmVxdWlyZSB0aGUgZGF0YSB0byBiZSBub3JtYWxpemVkIHNvIHRoYXQNCm5vIHBhcnRpY3VsYXIgdmFyaWFibGUgb3Igc3Vic2V0IG9mIHZhcmlhYmxlcyBkb21pbmF0ZXMgdGhlIGFuYWx5c2lzIHdlIGNhbiB1c2UgZWl0aGVyIG1pbuKAk21heCBub3JtYWxpemF0aW9uIG9yIFotc2NvcmUgc3RhbmRhcmRpemF0aW9uDQoNCg0KUHJ6eWR6aWHFgg0K4oCccDEwLmNzduKAnSwg4oCcZjEwLmNzduKAnSwg4oCcem9vLmNzduKAnQ0KDQpQaWVyd3N6YSBjemVzYyB6YWRhbmlhIHd5a29uYW5hIHcgZ29vZ2xlIHNoZWV0cyANCmh0dHBzOi8vZG9jcy5nb29nbGUuY29tL3NwcmVhZHNoZWV0cy9kLzFPb2g1U0hjNWw0QkhzQVNuRERPR3RDeFpscEdBdkJ6VUprNnliYTVSaVRZL2VkaXQ/dXNwPXNoYXJpbmcNCg0KDQoNClRyeSBleGVjdXRpbmcgdGhpcyBjaHVuayBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsgb3IgYnkgcGxhY2luZyB5b3VyIGN1cnNvciBpbnNpZGUgaXQgYW5kIHByZXNzaW5nICpDdHJsK1NoaWZ0K0VudGVyKi4gDQpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ3RybCtBbHQrSSouDQoNCg0KDQoNCmBgYHtyfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpmMTAgPC0gcmVhZF9jc3YoImV4M3N0dWRlbnRzL2YxMC5jc3YiLCBjb2xfbmFtZXM9RkFMU0UgKQ0Kem9vIDwtIHJlYWRfY3N2KCJleDNzdHVkZW50cy96b28uY3N2IikNCg0KYGBgDQpQcnplcHJvd2FkemnEhyBvYmxpY3plbmlhIHogd3lrb3J6eXN0YW5pZW0gYWxnb3J5dG11IGstxZtyZWRuaWNoIGRsYSBkYW55Y2ggeiBwbGlrdQ0K4oCcZiMuY3N24oCdIHXFvHl3YWrEhWMgasSZenlrYSBSLg0K4oCiIE5hIHBvZHN0YXdpZSB3eWtyZXN1IHJvenJ6dXR1IG9rcmXFm2xpxIcgbW/FvGxpd8SFIGxpY3pixJkgZ3J1cC4NCuKAoiBPYmxpY3plbmlhIHd5a29uYcSHIDUgcmF6eSAoNSBwcnplYmllZ8OzdyBhbGdvcnl0bXUpLiBaYXBpc2HEhyB3YXJ0b8WbY2kgAQEvBAEBIGRsYQ0Ka2HFvGRlZ28gcHJ6ZWJpZWd1IGFsZ29yeXRtdS4gV3NrYXphxIcgd2FydG/Fm8SHIG5handpxJlrc3rEhSwgbmFqbW5pZWpzesSFIG9yYXogxZtyZWRuacSFDQpwbyB3c3p5c3RraWNoIHByemViaWVnYWNoLg0K4oCiIFphem5hY3p5xIcgbmFqbGVwc3plIHV6eXNrYW5lIHJvendpxIV6YW5pZSBuYSB3eWtyZXNpZSByb3pyenV0dS4gV3NrYXphxIcgY2VudHJvaWR5Lg0KDQoNCmBgYHtyfQ0KbnVtYnMgPC0gZmxhdHRlbl9kYmwobWFwKGYxMCRYMSwgcGFyc2VfbnVtYmVyKSkNCmhpc3QobnVtYnMpDQpgYGANCmBgYHtyfQ0KDQpgYGANCg0KDQpgYGB7cn0NCmttPC1rbWVhbnMobnVtYnMsMiwgaXRlci5tYXggPSAxKQ0KU1NCb3ZlclRTU1ByaW08LSBrbSRiZXR3ZWVuc3MgL2ttJHRvdHNzDQoNCmV2YWxzcyA8LSBjKFNTQm92ZXJUU1NQcmltKSANCg0KbXlrbTwtIGZ1bmN0aW9uKCBjZW50cm9pZHMpIHsNCmttbTwta21lYW5zKG51bWJzLDIsaXRlci5tYXggPSAxLGNlbnRlcnM9IGNlbnRyb2lkcykNClNTQm92ZXJUU1M8LSAoa21tJGJldHdlZW5zcyAva21tJHRvdHNzKQ0KZXZhbHNzPDwtIGMoZXZhbHNzLCBTU0JvdmVyVFNTKQ0Ka21tJGNlbnRlcnMNCn0NCg0KY2VudHI8LWttJGNlbnRlcnMNCmZvciAoaSBpbiAxOjQpew0KICBwcmludCh0b1N0cmluZyhjZW50cikpDQogY2VudHI8PC0gbXlrbShjZW50cikNCn0NCg0KZXZhbHNzDQoNCg0KIyNwcmludCh0b1N0cmluZyhwYXN0ZSgiU1NCL1RTUyAiICxTU0JvdmVyVFNTKSkpDQoNCg0KYGBgDQpgYGB7cn0NCmttPC1rbWVhbnMobnVtYnMsMiwgaXRlci5tYXggPSAxKQ0KU1NCb3ZlclRTU1ByaW08LSBrbSRiZXR3ZWVuc3MgL2ttJHRvdHNzDQoNCmNlbnRyPC1rbSRjZW50ZXJzDQoNCmV2YWxzcyA8LSBjKFNTQm92ZXJUU1NQcmltKSANCg0Ka20xPC1rbWVhbnMobnVtYnMsMixpdGVyLm1heCA9IDEsY2VudGVycz0ga20kY2VudGVycykNClNTQm92ZXJUU1M8LSAoa20xJGJldHdlZW5zcyAva20xJHRvdHNzKQ0KZXZhbHNzPDwtIGMoZXZhbHNzLCBTU0JvdmVyVFNTKQ0KDQprbTI8LWttZWFucyhudW1icywyLGl0ZXIubWF4ID0gMSxjZW50ZXJzPSBrbTEkY2VudGVycykNClNTQm92ZXJUU1M8LSAoa20yJGJldHdlZW5zcyAva20yJHRvdHNzKQ0KZXZhbHNzPDwtIGMoZXZhbHNzLCBTU0JvdmVyVFNTKQ0KDQoNCmV2YWxzcw0KYGBgDQoNCg0KUGxvdHRpbmdFeGFtcGxlICAgICAgICAgICAgICAgICAgIGh0dHBzOi8vc3RhY2tvdmVyZmxvdy5jb20vcXVlc3Rpb25zLzIyOTE2MzM3L2dldHRpbmctdGhlLWNvb3JkaW5hdGVzLW9mLWV2ZXJ5LW9ic2VydmF0aW9uLWF0LWVhY2gtaXRlcmF0aW9uLW9mLWttZWFucy1pbi1yDQoNCg0Kc2V0LnNlZWQoMSkNCmNsdXMuMSA8LSBrbWVhbnMoaXJpc1ssMToyXSw1LGl0ZXIubWF4PTEpDQpjbHVzLjIgPC0ga21lYW5zKGlyaXNbLDE6Ml0sY2VudGVycz1jbHVzLjEkY2VudGVycyxpdGVyLm1heD0xKQ0KY2x1cy4zIDwtIGttZWFucyhpcmlzWywxOjJdLGNlbnRlcnM9Y2x1cy4yJGNlbnRlcnMsaXRlci5tYXg9MSkNCg0KY2hhbmdpbmcgPC0gd2hpY2goYXBwbHkoY2JpbmQoY2x1cy4xJGNsdXN0ZXIsY2x1cy4yJGNsdXN0ZXIsY2x1cy4zJGNsdXN0ZXIpLDEsc2QpPjApDQpjaGFuZ2luZw0Kb3BhciA8LSBwYXIobWZyb3c9YygxLDMpKQ0KICAgIHBsb3QoaXJpc1ssYygxLDIpXSxjb2w9Y2x1cy4xJGNsdXN0ZXIscGNoPTE5LG1haW49Ikl0ZXJhdGlvbiAxIikNCiAgICBwb2ludHMoaXJpc1tjaGFuZ2luZyxjKDEsMildLHBjaD0yMSxjZXg9MikNCiAgICBwbG90KGlyaXNbLGMoMSwyKV0sY29sPWNsdXMuMiRjbHVzdGVyLHBjaD0xOSxtYWluPSJJdGVyYXRpb24gMiIpDQogICAgcG9pbnRzKGlyaXNbY2hhbmdpbmcsYygxLDIpXSxwY2g9MjEsY2V4PTIpDQogICAgcGxvdChpcmlzWyxjKDEsMildLGNvbD1jbHVzLjMkY2x1c3RlcixwY2g9MTksbWFpbj0iSXRlcmF0aW9uIDMiKQ0KICAgIHBvaW50cyhpcmlzW2NoYW5naW5nLGMoMSwyKV0scGNoPTIxLGNleD0yKQ0KcGFyKG9wYXIpDQoNCg0KDQoNCg0KUGxpayDigJx6b28uY3N24oCdIHphd2llcmEgem1pZW5uZSBvcGlzdWrEhWNlIDcgdHlww7N3IHp3aWVyesSFdDogc3Nha2ksIHJ5YnksIHB0YWtpLCBiZXprcsSZZ293Y2UsDQpvd2FkeSwgcMWCYXp5IGkgZ2FkeS4gV3l6bmFjennEhyBncnVweSB3IHpiaW9yemUgZGFueWNoIOKAnHpvby5jc3bigJ0gdcW8eXdhasSFYyBhbGdvcnl0bXUga8WbcmVkbmljaC4gUG9yw7N3bmHEhyBvdHJ6eW1hbmUgd3luaWtpIHplIHpuYW7EhSBrbGFzeWZpa2FjasSFIGRvc3TEmXBuxIUgdyBwbGlrdSDigJx6b29fZnVsbC54bHN44oCdICh3DQpvc3RhdG5pZWoga29sdW1uaWUg4oCcdHlwZeKAnSkuIEt0w7NyZSB0eXB5IHp3aWVyesSFdCBiecWCeSBuYWpjesSZxZtjaWVqIG15bG9uZT8gDQoNCmBgYHtyfQ0KDQprbWVhbnMoem9vLCBjZW50ZXJzID0gNykNCg0KYGBgDQoNClByemVwcm93YWR6b25vIHLEmWN6bsSFIGFuYWxpemUgIHBva2F6YW7EhSBodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9zcHJlYWRzaGVldHMvZC8xSHZ2T1IzeG81bXdsamlVTGYyM2NoM1dJa0o4eGNPbGVrZjRybnhzTnRiVS9lZGl0P3VzcD1zaGFyaW5nICBpIG5hamN6xJlzdHN6ZSBixYLEmWR5IHPEhSB3IGtsYXNpZSBpbnZlcnRlYnJhZQ0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlphZGFuaWUgMyINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCk5vdGF0a2kNCg0KRm9yIG9wdGltYWwgcGVyZm9ybWFuY2UsIGNsdXN0ZXJpbmcgYWxnb3JpdGhtcywgcmVxdWlyZSB0aGUgZGF0YSB0byBiZSBub3JtYWxpemVkIHNvIHRoYXQNCm5vIHBhcnRpY3VsYXIgdmFyaWFibGUgb3Igc3Vic2V0IG9mIHZhcmlhYmxlcyBkb21pbmF0ZXMgdGhlIGFuYWx5c2lzIHdlIGNhbiB1c2UgZWl0aGVyIG1pbuKAk21heCBub3JtYWxpemF0aW9uIG9yIFotc2NvcmUgc3RhbmRhcmRpemF0aW9uDQoNCg0KUHJ6eWR6aWHFgg0K4oCccDEwLmNzduKAnSwg4oCcZjEwLmNzduKAnSwg4oCcem9vLmNzduKAnQ0KDQpQaWVyd3N6YSBjemVzYyB6YWRhbmlhIHd5a29uYW5hIHcgZ29vZ2xlIHNoZWV0cyANCmh0dHBzOi8vZG9jcy5nb29nbGUuY29tL3NwcmVhZHNoZWV0cy9kLzFPb2g1U0hjNWw0QkhzQVNuRERPR3RDeFpscEdBdkJ6VUprNnliYTVSaVRZL2VkaXQ/dXNwPXNoYXJpbmcNCg0KDQoNClRyeSBleGVjdXRpbmcgdGhpcyBjaHVuayBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsgb3IgYnkgcGxhY2luZyB5b3VyIGN1cnNvciBpbnNpZGUgaXQgYW5kIHByZXNzaW5nICpDdHJsK1NoaWZ0K0VudGVyKi4gDQpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ3RybCtBbHQrSSouDQoNCg0KDQoNCmBgYHtyfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpmMTAgPC0gcmVhZF9jc3YoImV4M3N0dWRlbnRzL2YxMC5jc3YiLCBjb2xfbmFtZXM9RkFMU0UgKQ0Kem9vIDwtIHJlYWRfY3N2KCJleDNzdHVkZW50cy96b28uY3N2IikNCg0KYGBgDQpQcnplcHJvd2FkemnEhyBvYmxpY3plbmlhIHogd3lrb3J6eXN0YW5pZW0gYWxnb3J5dG11IGstxZtyZWRuaWNoIGRsYSBkYW55Y2ggeiBwbGlrdQ0K4oCcZiMuY3N24oCdIHXFvHl3YWrEhWMgasSZenlrYSBSLg0K4oCiIE5hIHBvZHN0YXdpZSB3eWtyZXN1IHJvenJ6dXR1IG9rcmXFm2xpxIcgbW/FvGxpd8SFIGxpY3pixJkgZ3J1cC4NCuKAoiBPYmxpY3plbmlhIHd5a29uYcSHIDUgcmF6eSAoNSBwcnplYmllZ8OzdyBhbGdvcnl0bXUpLiBaYXBpc2HEhyB3YXJ0b8WbY2kgAQEvBAEBIGRsYQ0Ka2HFvGRlZ28gcHJ6ZWJpZWd1IGFsZ29yeXRtdS4gV3NrYXphxIcgd2FydG/Fm8SHIG5handpxJlrc3rEhSwgbmFqbW5pZWpzesSFIG9yYXogxZtyZWRuacSFDQpwbyB3c3p5c3RraWNoIHByemViaWVnYWNoLg0K4oCiIFphem5hY3p5xIcgbmFqbGVwc3plIHV6eXNrYW5lIHJvendpxIV6YW5pZSBuYSB3eWtyZXNpZSByb3pyenV0dS4gV3NrYXphxIcgY2VudHJvaWR5Lg0KDQoNCmBgYHtyfQ0KbnVtYnMgPC0gZmxhdHRlbl9kYmwobWFwKGYxMCRYMSwgcGFyc2VfbnVtYmVyKSkNCmhpc3QobnVtYnMpDQpgYGANCg0KDQoNCmBgYHtyfQ0Ka208LWttZWFucyhudW1icywyLCBpdGVyLm1heCA9IDIwKQ0KDQoNCmBgYA0KDQpaYSBrYcW8ZMSFIGl0ZXJhY2rEhSANCg0KQ2x1c3RlciBtZWFuczoNCiAgICAgICBbLDFdDQoxIC01Mi42MDY4Mw0KMiAgODcuNjAyMjYNCg0KIChiZXR3ZWVuX1NTIC8gdG90YWxfU1MgPSAgOTcuNCAlKSANCg0KDQoNCg0KUGxpayDigJx6b28uY3N24oCdIHphd2llcmEgem1pZW5uZSBvcGlzdWrEhWNlIDcgdHlww7N3IHp3aWVyesSFdDogc3Nha2ksIHJ5YnksIHB0YWtpLCBiZXprcsSZZ293Y2UsDQpvd2FkeSwgcMWCYXp5IGkgZ2FkeS4gV3l6bmFjennEhyBncnVweSB3IHpiaW9yemUgZGFueWNoIOKAnHpvby5jc3bigJ0gdcW8eXdhasSFYyBhbGdvcnl0bXUga8WbcmVkbmljaC4gUG9yw7N3bmHEhyBvdHJ6eW1hbmUgd3luaWtpIHplIHpuYW7EhSBrbGFzeWZpa2FjasSFIGRvc3TEmXBuxIUgdyBwbGlrdSDigJx6b29fZnVsbC54bHN44oCdICh3DQpvc3RhdG5pZWoga29sdW1uaWUg4oCcdHlwZeKAnSkuIEt0w7NyZSB0eXB5IHp3aWVyesSFdCBiecWCeSBuYWpjesSZxZtjaWVqIG15bG9uZT8gDQoNCmBgYHtyfQ0KDQprbWVhbnMoem9vLCBjZW50ZXJzID0gNykNCg0KYGBgDQoNClByemVwcm93YWR6b25vIHLEmWN6bsSFIGFuYWxpemUgIHBva2F6YW7EhSBodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9zcHJlYWRzaGVldHMvZC8xSHZ2T1IzeG81bXdsamlVTGYyM2NoM1dJa0o4eGNPbGVrZjRybnhzTnRiVS9lZGl0P3VzcD1zaGFyaW5nICBpIG5hamN6xJlzdHN6ZSBixYLEmWR5IHPEhSB3IGtsYXNpZSBpbnZlcnRlYnJhZQ0K</div>
 
 
 

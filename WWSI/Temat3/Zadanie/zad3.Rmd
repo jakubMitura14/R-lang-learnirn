@@ -42,77 +42,23 @@ po wszystkich przebiegach.
 numbs <- flatten_dbl(map(f10$X1, parse_number))
 hist(numbs)
 ```
-```{r}
 
-```
 
 
 ```{r}
-km<-kmeans(numbs,2, iter.max = 1)
-SSBoverTSSPrim<- km$betweenss /km$totss
-
-evalss <- c(SSBoverTSSPrim) 
-
-mykm<- function( centroids) {
-kmm<-kmeans(numbs,2,iter.max = 1,centers= centroids)
-SSBoverTSS<- (kmm$betweenss /kmm$totss)
-evalss<<- c(evalss, SSBoverTSS)
-kmm$centers
-}
-
-centr<-km$centers
-for (i in 1:4){
-  print(toString(centr))
- centr<<- mykm(centr)
-}
-
-evalss
-
-
-##print(toString(paste("SSB/TSS " ,SSBoverTSS)))
+km<-kmeans(numbs,2, iter.max = 20)
 
 
 ```
-```{r}
-km<-kmeans(numbs,2, iter.max = 1)
-SSBoverTSSPrim<- km$betweenss /km$totss
 
-centr<-km$centers
+Za każdą iteracją 
 
-evalss <- c(SSBoverTSSPrim) 
+Cluster means:
+       [,1]
+1 -52.60683
+2  87.60226
 
-km1<-kmeans(numbs,2,iter.max = 1,centers= km$centers)
-SSBoverTSS<- (km1$betweenss /km1$totss)
-evalss<<- c(evalss, SSBoverTSS)
-
-km2<-kmeans(numbs,2,iter.max = 1,centers= km1$centers)
-SSBoverTSS<- (km2$betweenss /km2$totss)
-evalss<<- c(evalss, SSBoverTSS)
-
-
-evalss
-```
-
-
-PlottingExample                   https://stackoverflow.com/questions/22916337/getting-the-coordinates-of-every-observation-at-each-iteration-of-kmeans-in-r
-
-
-set.seed(1)
-clus.1 <- kmeans(iris[,1:2],5,iter.max=1)
-clus.2 <- kmeans(iris[,1:2],centers=clus.1$centers,iter.max=1)
-clus.3 <- kmeans(iris[,1:2],centers=clus.2$centers,iter.max=1)
-
-changing <- which(apply(cbind(clus.1$cluster,clus.2$cluster,clus.3$cluster),1,sd)>0)
-changing
-opar <- par(mfrow=c(1,3))
-    plot(iris[,c(1,2)],col=clus.1$cluster,pch=19,main="Iteration 1")
-    points(iris[changing,c(1,2)],pch=21,cex=2)
-    plot(iris[,c(1,2)],col=clus.2$cluster,pch=19,main="Iteration 2")
-    points(iris[changing,c(1,2)],pch=21,cex=2)
-    plot(iris[,c(1,2)],col=clus.3$cluster,pch=19,main="Iteration 3")
-    points(iris[changing,c(1,2)],pch=21,cex=2)
-par(opar)
-
+ (between_SS / total_SS =  97.4 %) 
 
 
 

@@ -1,0 +1,78 @@
+---
+title: "Zadanie 6"
+output: html_notebook
+---
+Plik :“cereals.csv”
+
+Polecenie 1
+y = rating,
+x = calories
+nowe wartości   x:  66, 82, 125
+
+Polecenie 2
+y = rating
+x= calories, potass
+
+
+
+
+```{r}
+d <- as.data.frame(read_csv("_data_sets/cereals.csv"))
+model<-lm(d$RATING ~ d$CALORIES) # lm() creates a linear model
+
+
+```
+w summary wszystko określone
+
+a) Podaj oszacowane równanie regresji.  (coefficients)
+b) Podaj typową wartość błędu oszacowania (residual standard error) dla utworzonego modelu. 
+Sprawdź, czy istnnieje liniowa zależność między y a x (wykorzystaj odpowiednią statystykę).  - TAK p value poniżej 0.005
+d) Sprawdź, w jakim stopniu model jest dopasowany do danych (wykorzystaj odpowiednią statystykę). NIE wysoki residual standard error
+
+```{r}
+summary(model)
+
+```
+
+
+Wyznacz wartości y dla nowych (wskazanych) wartości x. Wyznacz 95% przedział ufności dla rzeczywistej
+wartości średniej 	 oraz wyznacz 95% przedział przewidywania dla losowej wartości . Wykonaj
+obliczenia dla wszystkich nowych wartości x. Zapisz swoje obserwacje. 
+```{r}
+new <- data.frame(hrsp = c(66, 82, 125))
+predict(model, new, interval = "confidence",level=0.95)
+```
+
+
+ Narysuj wykres rozrzutu  względem  wraz z linią oszacowanego równania regresji. 
+
+```{r}
+
+plot(d$RATING,d$CALORIES) #creates a scatter plot
+abline(model,col='red') #adds the model line to the plot
+```
+2. (2 pkt.) Wykorzystaj regresję wielokrotną do szacowania wartosci y na postawie wielu wartości x.
+a) Podaj oszacowane równanie regresji.
+
+zadane 
+y = rating
+x= calories, potass
+
+```{r}
+
+multiModel<-lm(d$RATING ~ d$CALORIES+d$POTASS)
+summary(multiModel)
+```
+
+
+
+b) Porównaj wartości współczynnika determinacji R^2  dla regresji wielokrotnej i regresji prostej z polecenia
+1. Zapisz swoje obserwacje. 
+w pierwszym modelu Multiple R-squared:  0.4752
+w drugim modelu Multiple R-squared:  0.5875,
+
+
+
+
+
+

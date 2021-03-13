@@ -1,0 +1,125 @@
+---
+title: "Zadanie 5"
+output: html_notebook
+---
+
+przydział 3_cleveland.csv
+CART
+
+(2 pkt) Przeprowadzić indukcję drzewa decyzyjnego bez użycia języka R dla małego zbioru danych
+wyodrębnionego ze zbioru oryginalnego. W celu utworzenia „małego zbioru danych” należy wybrać
+(inteligentnie!!!):
+ 3 lub 4 atrybuty jako zmienne opisujące,
+ 10 rerkordów jako zbiór trenujący,
+ 5 rekordów jako zbiór testowy.
+Należy pokazać indukcję drzewa decyzyjnego (podobnie jak to zostało zrobione w prezentacji). Narysować i
+przetestować utworzone drzewo.  
+
+wykonane w arkuszu excela
+
+https://docs.google.com/spreadsheets/d/1M5wj2RU5ZMmooG9SVPhj1FoN0jOCbCC1AgwpWG6TSB8/edit?usp=sharing
+
+
+```{r}
+library(tidyverse)
+library("rpart");library("rpart.plot")
+library(class)
+library(farff)   
+d <- read_csv("Zadanie/data sets/3_cleveland.csv")
+```
+
+
+(2 pkt) Wykorzystując cały zbiór danych przeprowadzić walidację krzyżową z użyciem k podzbiorów (za pomocą
+skryptu w języku R) dla różnych wartości parametru algorytmu: minCases (dla algorytmu C4.5) lub
+minsplit (dla algorytmu CART). Zastosować otrzymany model do klasyfikacji danych zarówno ze zbioru
+testowego jak i ze zbioru trenującego. Przedstawić otrzymane wyniki na wykresie liniowym, tzn. poziomy
+błędów (dla danych testowych i trenujących) względem wartości parametru algorytmu. Przedyskutować
+otrzymane wyniki. Skomentować nadmierne dopasowanie, jeżeli zostało zaobserwowane.
+Wartości parametrów:
+ liczba podzbiorów do walidacji krzyżowej k = 10;
+ parametr minCases dla algorytmu C4.5 powinien przyjmować wartości od 1 do 40
+ parametr minsplit dla algorytmu CART powinien przyjmować wartości od 2 to 80
+ pozostałe parametry, CF = 1.0 (C4.5) i cp = 0.0 (CART).
+C5.0(x=…,y=…,control=C5.0Control(minCases = …,CF=1.0))
+rpart(…, data = …, method =…, control=rpart.control(minsplit=… cp=0.0))
+
+
+```{r}
+
+#funkcja stosujac k fold validation sprawdza blad drzewa decyzyjnego przy zadanym minsplit
+testingTree <- function(minSpl) {
+  ##liczba podzbiorów = 10
+#Create equally size folds
+d<-as.data.frame(d)
+nbreaks<-14
+
+folds <- cut(seq(1,nrow(d)),breaks=nbreaks,labels=FALSE)
+#function cut() divides a given range into intervals; the leftmost interval corresponds to level one, the next leftmost to level two and so on.
+
+av_err_rate<-double() #setting the initial value for average error rate
+
+for(i in seq(1:nbreaks)){
+  #Segement your data by fold using the which() function 
+  test_indices <- which(folds==i,arr.ind=TRUE) #function which() segments the data by fold
+  d.test <- d[test_indices,1:15]  #without class
+  d.test.class<- d[test_indices,15]    #only class
+  d.train <- d[-test_indices, 1:15]
+  d.train.class <- d[-test_indices, 15]
+
+  #testujemy na zbiorze testowym i treningowym nasze drzewo decyzyjne
+
+model<-rpart(cl~Age +Sex +Cp+Trestbs+ Chol+FBS+Restecg+Restecg+Thalach+Exang+Exang+Oldpeak+Slope+Slope+Slope+Ca+Thal , data = d.train, method = "class",control=rpart.control(minsplit=minSpl))
+  
+pred <- predict(model, d.test,type='class') 
+error_rate<-mean(pred != d.test.class) 
+av_err_rate<- c(av_err_rate,error_rate)
+  }
+mean(av_err_rate)# zwracamy  średni błąd  przy zadanym minSplit 
+  }
+
+
+# tworzymy  dataframe który podsumowuje 
+mainFrame <- tibble( 
+  minSplit = seq(2:80),
+  AvErrorRate = flatten_dbl(seq(2:80) %>%map(~testingTree(.)) ))
+
+
+ggplot(data=mainFrame, aes(x=minSplit, y=AvErrorRate, group=1)) +
+  geom_line(linetype = "dashed")
+
+
+```
+
+
+Zbyt mała wartość misplit powoduje overfitting bo struktura jest zbyt skomplikowana zas za duze wartosci underfitting bo struktura staje sie zbut uproszczona
+
+
+
+
+
+
+ (1pkt) Dokonaj klasyfikacji nowych rekordów danych, podanych w pliku „new records.txt” przy użyciu drzewa
+decyzyjnego (utworzonego na podstawie całego zbioru danych) i algorytmu knn (działającego z całym zbiorem
+danych). Porównaj wyniki. 
+
+
+```{r}
+# pelne dane sa w d
+
+readARFF("Zadanie/data sets/3_cleveland_names.txt") #nowe dane sa w formacie ARFF
+
+# najpierw definiujemy model knn i oceniamy jego błąd
+  knn.result <- knn(d.train, d.test, d.train.class, k = 1)
+  t<-table(d.test.class,knn.result)
+  err_rateKnn<-(nrow(d.test)-sum(diag(t)))/nrow(d.test)
+  print(paste ("Knn blad ", toString(err_rateKnn) ))
+  
+# nastepnie definiujemy drzewo decyzyjne i określamy błąd związany z nim
+  model<-rpart(cl~Age +Sex +Cp+Trestbs+ Chol+FBS+Restecg+Restecg+Thalach+Exang+Exang+Oldpeak+Slope+Slope+Slope+Ca+Thal , data = d.train, method = "class",control=rpart.control(minsplit=minSpl))
+  
+  pred <- predict(model, d.test,type='class') 
+  error_rateTree<-mean(pred != d.test.class) 
+  
+```
+
+

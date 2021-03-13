@@ -1,0 +1,54 @@
+---
+title: "Zadanie7"
+output: html_notebook
+---
+
+zadane 
+“vote3.csv”
+Predicted value == “republican”
+
+
+(3 pkty) Utwórz reguły asocjacyjne z jednym i dwoma poprzednikami dla przewidywania wskazanej wartości
+atrybutu class (democrat lub republican) wykorzystując algorytm priory. Wykonaj to zadanie bez użycia języka R
+wykorzystując mały zbiór danych, zawierający 10 rekordów wybranych losowo z oryginalnego zbioru danych
+(można również wziąć mniejszą liczbę atrybutów).
+ Ustaw wartość Φ = 4, albo, w przypadku dużej liczby zbiorów częstych, Φ = 3
+ Utwórz zbiory częste 1, 2 i 3-elementowe.
+ Utwórz reguły asocjacyjne, dla których minimalna ufność wynosi 80%, a minimalne wsparcie 40%. 
+
+
+
+Zrobione w 
+
+https://docs.google.com/spreadsheets/d/1NN7Jjus7bjJBfhLQQIUf8NVFZ3NTu03nk8_TbdKSWFc/edit?usp=sharing
+
+
+
+. (2 pkty) Wykorzystując pełny zbiór danych oraz język R, utwórz reguly asocjacyjne z nie więcej niż pięcioma
+poprzednikami dla przewidywania wskazanej wartości (democrat lub republican) zmiennej class. Przeprowadź
+obliczenia dla wartości wskaźnika ufności równej 80% i 95% oraz wsparcia równej 30%. Skomentuj otrzymane
+wyniki
+
+```{r}
+library(arules)
+td <- read.transactions("Zadanie/data_sets/vote3.csv", sep=',') 
+
+```
+
+
+
+```{r}
+arules<- apriori(td,parameter=list(supp=0.3,conf=.80, minlen=2,maxlen=5, target='rules')) # run a priori algorithms
+inspect(sort(arules, by="confidence", decreasing=TRUE)) 
+
+```
+
+
+
+```{r}
+arulesB<-apriori(td,parameter=list(supp=0.3,conf=.95, minlen=2,maxlen=5, target='rules')) # run a priori algorithms
+inspect(sort(arulesB, by="confidence", decreasing=TRUE)) 
+
+```
+wyniki są bardzo podobne w przypadku tego zbioru danych
+

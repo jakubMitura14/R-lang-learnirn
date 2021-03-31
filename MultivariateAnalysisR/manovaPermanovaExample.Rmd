@@ -1,0 +1,141 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+https://rpubs.com/collnell/manova
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+
+```{r}
+install.packages('vegan')
+library(vegan) 
+
+```
+```{r}
+birds<-read.csv('https://raw.githubusercontent.com/collnell/lab-demo/master/bird_by_fg.csv')
+trees<-read.csv('https://raw.githubusercontent.com/collnell/lab-demo/master/tree_comp.csv')
+```
+
+
+```{r}
+birds
+```
+```{r}
+trees
+```
+
+so we have bird species vs  diversity of trees where diversity of trees is presented as categorical variable - P or d
+
+P/D - bird species
+in birds we also have plot column that as far as I understand describes what tree species are there - in order to decode number to the tree species combination we have trees table
+
+
+so we are intrested in B  of tree column - so we changed it as factor ...
+```{r}
+as.matrix(birds[,3:9]) #so we are dropping first two and last two columns 
+experim<- merge(birds[,3:9], as.factor(trees$B))
+experim[,1:7]
+                
+```
+Original
+```{r}
+bird.matrix<-as.matrix(birds[,3:9])##response variables in a sample x species matrix
+trees$B<-as.factor(trees$B)
+
+bird.manova<-manova(bird.matrix~as.factor(B), data=trees) ##manova test
+summary(bird.manova) 
+```
+
+My - we do not need to specify thios data !!!
+
+```{r}
+bird.matrix<-as.matrix(birds[,3:9])##response variables in a sample x species matrix
+trees$B<-as.factor(trees$B)
+
+ff<- as.matrix(experim[,1:7])
+
+bird.manova<-manova(bird.matrix ~ trees$B) ##manova test
+summary(bird.manova) 
+
+```
+```{r}
+experim
+```
+
+
+# Permanova
+
+so before permanova it is good practice to square root the dataset to reduce influeance of most abundant groups
+
+```{r}
+bird.mat<-sqrt(bird.matrix)#square root transform
+bird.mat
+```
+
+
+
+Quantify pairwise compositional dissimilarity between sites based on species occurances.
+- Bray-Curtis dissimilarity (abundance weighted)
+- Jaccard (presence/absence)
+- Gower’s (non-continuous variables)
+
+so in case of true false matrix we will use jaccard
+https://www.rdocumentation.org/packages/vegan/versions/2.4-2/topics/vegdist
+
+```{r}
+bird.dist<-vegdist(bird.mat, method='bray')
+
+
+set.seed(36) #reproducible results
+
+bird.div<-adonis2(bird.dist~DIVERSITY, data=birds, permutations = 999, method="bray")
+bird.div
+
+
+```
+```{r}
+bird.dist<-vegdist(bird.mat, method='bray')
+
+
+set.seed(36) #reproducible results
+
+bird.div<-adonis2(bird.dist~birds[['DIVERSITY']], permutations = 999, method="bray")
+bird.div
+```
+
+
+```{r}
+dispersion<-betadisper(bird.dist, group=birds$DIVERSITY)
+permutest(dispersion)
+```
+
+
+```{r}
+plot(dispersion, hull=FALSE, ellipse=TRUE) ##sd ellipse
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

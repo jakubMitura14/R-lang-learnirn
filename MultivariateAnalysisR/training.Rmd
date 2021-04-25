@@ -1,0 +1,618 @@
+---
+title: "structure aware B_H"
+output: html_notebook
+---
+basically coipied code from with some modifications to fit our dataset
+http://www.stat.uchicago.edu/~rina/sabha/fMRI_data_example.R
+
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+```{r}
+		install.packages("R.matlab")
+	library("R.matlab")
+
+
+```
+
+
+```{r}
+
+# this file provides functions for computing q-hat for the SABHA method
+# includes:
+# Solve_q_step = q-hat of the form (eps,...,eps,1,...,1)
+# Solve_q_ordered = q-hat of the form (q1,...,qn) with eps<=q1<=q2<=...<=qn<=1
+# Solve_q_block = q-hat that is block-wise constant, and eps<=q<=1
+# Solve_q_TV_1dim = q-hat that has bounded 1d total variation norm, and eps<=q<=1
+# Solve_q_TV = q-hat that has bounded total variation norm on a specified graph, and eps<=q<=1
+
+##########################################################
+## SABHA with ordered q: q = step function
+##########################################################
+
+# Solve_q_step: returns a vector q subject to the constraint that (q1, q2, ...,  qn) = (eps, eps, ..., eps, 1, 1, ..., 1), with as many eps's as possible, subject to sum_i 1{P[i]>tau}/q[i](1-tau) <= n
+Solve_q_step = function(Pvals, tau, eps){
+  n = length(Pvals)
+  sum_p_over_threshold = sum(Pvals > tau)
+  K = max(which(cumsum(Pvals > tau) <= (n*(1-tau) - sum_p_over_threshold) / (1/eps - 1)), 0)
+  
+  return (c(rep(eps, K), rep(1, n-K)))
+}
+
+##########################################################
+## SABHA with ordered q: q satisfies eps<=q1<=q2<=...<=qn=1
+##########################################################
+
+Solve_q_ordered = function(Pvals, tau, eps, ADMM_params){
+	PAVA_alg = create_PAVA_alg_function()
+	M = diag(length(Pvals))
+	q = Solve_q_ADMM(Pvals, tau, eps, M, PAVA_alg, ADMM_params)
+	q
+}
+
+create_PAVA_alg_function = function(){
+	function(y){
+         # solving: min{1/2 ||x-y||^2_2 : x_1<=..<=x_n}
+	       # PAVA algorithm (Barlow et al 1972)
+	       n=length(y)
+	       thresh = 1e-8
+	       groups = 1:n
+	       block = 1
+	
+	       stop = FALSE
+	       while(!stop){
+		         if(any(groups==block+1)){
+			             block_plus = which(groups==block+1)
+			             if(mean(y[which(groups==block)])<=mean(y[which(groups==block+1)])+thresh){
+				              block = block+1
+			             } else{
+				              groups[which(groups>block)] = groups[which(groups>block)] - 1
+				              stop_inner = FALSE
+				              while(!stop_inner)
+					               if(any(groups==block-1)){
+						               if(mean(y[which(groups==block-1)])>mean(y[which(groups==block)])+thresh){
+							                groups[which(groups>=block)] = groups[which(groups>=block)] - 1
+							                block = block-1
+						               } else{
+							                stop_inner=TRUE
+						               }
+					               } else{
+						                stop_inner=TRUE
+					               }
+				           }
+			       } else{
+				        stop=TRUE
+			       }
+	       }
+	       x=y
+	       for(i in 1:max(groups)){
+		         x[which(groups==i)]=mean(y[which(groups==i)])
+	       }
+	       x
+     }
+     
+}    
+     
+     
+##########################################################
+## SABHA with block q: q = constant over blocks
+##########################################################
+     
+Solve_q_block = function(Pvals, tau, eps, blocks, ADMM_params){
+	# blocks[i] gives the index of the block to which Pvals[i] belongs
+	block_proj = create_block_function(blocks)
+	q_init = block_proj((Pvals>tau)/(1-tau))
+	if(min(q_init)>=eps & max(q_init)<=1){
+		q = q_init
+	}else{
+		M = diag(length(Pvals))
+		q = Solve_q_ADMM(Pvals, tau, eps, M, block_proj, ADMM_params)
+	}
+	q
+}  
+     
+create_block_function = function(blocks){
+	function(y){
+         # solving: min{1/2 ||x-y||^2_2 : x is constant over the blocks}
+		x = y
+		block_inds = sort(unique(blocks))
+		for(i in block_inds){
+			x[which(blocks==block_inds[i])] = mean(x[which(blocks==block_inds[i])])
+		}
+		x
+	}
+}     
+     
+##########################################################
+## SABHA with TV norm constraint on q: ||q||_TV <= TV_bd
+##########################################################
+
+Solve_q_TV_1dim = function(Pvals, tau, eps, TV_bd, ADMM_params){
+	edges = cbind(1:(length(Pvals)-1),2:length(Pvals))
+	Solve_q_TV(Pvals, tau, eps, edges, TV_bd, ADMM_params)
+}
+
+Solve_q_TV_2dim = function(Pvals, tau, eps, TV_bd, ADMM_params){
+	n1 = dim(Pvals)[1]
+	n2 = dim(Pvals)[2]
+	edges = NULL
+	get_ind = function(i,j){i+(j-1)*n1}
+	# horizontal edges
+	for(i in 1:n1){for(j in 1:(n2-1)){edges=rbind(edges,c(get_ind(i,j),get_ind(i,j+1)))}}
+	# vertical edges
+	for(j in 1:n2){for(i in 1:(n1-1)){edges=rbind(edges,c(get_ind(i,j),get_ind(i+1,j)))}}
+	Solve_q_TV(c(Pvals), tau, eps, edges, TV_bd, ADMM_params)
+}
+     
+Solve_q_TV = function(Pvals, tau, eps, edges, TV_bd, ADMM_params){
+	# edges is a e-by-2 matrix giving the edges of the adjacency graph
+	# edges[i,1:2] gives the indices of the nodes on the i-th edge
+	# constraint: sum_{i=1,..,e} |q[edges[i,1]] - q[edges[i,2]]| <= TV_bd
+	L1_proj = create_L1_function(TV_bd)
+	nedge = dim(edges)[1]; n = length(Pvals)
+	M = matrix(0,nedge,n); for(i in 1:nedge){M[i,edges[i,1]]=1; M[i,edges[i,2]]=-1}
+	q = Solve_q_ADMM(Pvals, tau, eps, M, L1_proj, ADMM_params)
+	q
+}  
+    
+create_L1_function = function(bound){
+	function(y){
+         # solving: min{1/2 ||x-y||^2_2 : ||x||_1 <= bound}
+        if(sum(abs(y))<=bound){x=y} else{
+			    mu = sort(abs(y), decreasing = TRUE)
+    	    xi = max(which(mu - (cumsum(mu)-bound)/(1:length(mu))>0))
+        	theta = (sum(mu[1:xi])-bound)/xi
+	        tmp = abs(y)-theta
+    	    x = rep(0, length(tmp))
+        	x[which(tmp>0)] = tmp[which(tmp>0)]
+	        x[which(tmp<=0)] = 0
+    	    x = x*sign(y)
+    	  }
+        x
+	}
+}        
+     
+     
+##########################################################
+## SABHA ADMM algorithm
+##########################################################
+
+Solve_q_ADMM = function(Pvals, tau, eps, M, projection, ADMM_params){
+# min -sum_i (B[i]*log((1-tau) q[i]) + (1-B[i])*log(1-(1-tau) q[i]))
+# subject to (1) q \in Qset (characterized by M*q \in Mset)
+# and (2) sum_i B[i]/q[i] <= gamma and (3) eps<=q<=1
+# introduce auxiliary variables x, y under the constraint Mq = x, q = y
+# ADMM optimization:
+# minimize -sum_i (B_i*log((1-tau) q_i)+(1-B_i)*log(1-(1-tau) q_i)) + <u, Mq-x> + <v, q-y> + alpha/2 ||Mq-x||^2 + beta/2 ||q-y||^2 + alpha/2 (q-qt)'(eta I - M'M)(q-qt)
+# where qt is the previous iteration's q value
+  
+# ADMM_params are: alpha, beta, eta, max_iters, converge_thr
+	alpha_ADMM = ADMM_params[1]
+	beta = ADMM_params[2]
+	eta = ADMM_params[3]
+	max_iters = ADMM_params[4]
+	converge_thr = ADMM_params[5]
+
+	n = length(Pvals)
+	B = (Pvals > tau) 
+  gamma = n*(1-tau) # bound on sum_i (Pvals[i]>tau) / q[i]*(1-tau)
+	q = y = rep(1,n)
+	v = rep(0,n)
+	u = x = rep(0,dim(M)[1])
+	
+	converge_check = function(q,x,y,u,v,q_old,x_old,y_old,u_old,v_old){
+		max(c(sqrt(sum((q-q_old)^2))/sqrt(1+sum(q_old^2)),
+          sqrt(sum((x-x_old)^2))/sqrt(1+sum(x_old^2)),
+          sqrt(sum((y-y_old)^2))/sqrt(1+sum(y_old^2)),
+          sqrt(sum((u-u_old)^2))/sqrt(1+sum(u_old^2)),
+          sqrt(sum((v-v_old)^2))/sqrt(1+sum(v_old^2))))
+	}
+	
+	stop = FALSE
+	iter = 0
+  while(!stop){
+    iter = iter+1
+    q_old = q; x_old = x; y_old = y; u_old = u; v_old = v
+    q = q_update(B, M, tau,eps,q,x,y,u,v,alpha_ADMM,gamma,beta, eta)
+    x = x_update(B, M, tau,eps,q,x,y,u,v,alpha_ADMM,gamma,beta, eta, projection)
+    y = y_update(B, M, tau,eps,q,x,y,u,v,alpha_ADMM,gamma,beta, eta)
+    u = u_update(B, M, tau,eps,q,x,y,u,v,alpha_ADMM,gamma,beta, eta)
+	  v = v_update(B, M, tau,eps,q,x,y,u,v,alpha_ADMM,gamma,beta, eta)
+	  if(converge_check(q,x,y,u,v,q_old,x_old,y_old,u_old,v_old)<=converge_thr){stop=TRUE}
+	  if(iter>=max_iters){stop=TRUE}
+  }
+    
+  return(q)
+    
+}
+
+
+# inverse_sum_prox solves: min{1/2 ||x-y||^2 : x_i>0, sum_i 1/x_i <= bound}
+# Used in y-update step of ADMM
+inverse_sum_prox = function(y,bound){
+
+	y = pmax(0,y) # the solution will have all positive x_i's now
+					# and we can now ignore the constraint x_i>0
+	
+	if(sum(1/y)<= bound){
+		x=y
+	}else{ # use Lagrange multipliers
+		
+		# we should have - lambda * d/dx_j (sum_i 1/x_i) = d/dx_j (1/2 ||x-y||^2)
+		# for all j, for some single lambda>0
+		# in other words, lambda / x^2 = x-y (this holds elementwise)
+		# rearranging, lambda = x^3 - x^2*y
+		# let c = log(lambda) so that it's real-valued
+		# we need to solve x^3 - x^2*y - exp(c) = 0 (elementwise)
+		
+		cuberoot = function(c){ # this solves the cubic equation x^3-x^2*y-exp(c)=0
+			temp1 = ((y/3)^3 + exp(c)/2 + (exp(c)*(y/3)^3 + exp(c)^2/4)^0.5)
+			temp2 = ((y/3)^3 + exp(c)/2 - (exp(c)*(y/3)^3 + exp(c)^2/4)^0.5)
+			x = sign(temp1)*abs(temp1)^(1/3) + sign(temp2)*abs(temp2)^(1/3) + (y/3)
+			x
+		}
+		
+		# now we need to choose c, i.e. choose the lagrange multiplier lambda=exp(c)
+		# the right value of c is the one that produces an x satisfying sum_i 1/x_i = bound
+		
+		c = uniroot(function(c){sum(1/cuberoot(c))-bound},c(-100,100))$root
+		x = cuberoot(c)
+	}
+	x
+}
+
+q_update = function(B, M, tau,eps,q,x,y,u,v,alpha,gamma,beta, eta){
+# minimize -sum_i (B_i*log((1-tau) q_i)+(1-B_i)*log(1-(1-tau) q_i)) + <u, Mq-x> + <v, q-y> + alpha/2 ||Mq-x||^2 + beta/2 ||q-y||^2 + alpha/2 (q-qt)'(eta I - M'M)(q-qt)
+# where qt is the previous iteration's q value
+# equivalently, -sum_i (B_i*log((1-tau) q_i)+(1-B_i)*log(1-(1-tau) q_i)) + (alpha eta + beta)/2 * ||q-w||_2^2
+# where w = - (M'(ut + alpha (M qt - xt)) + (vt - beta yt - alpha eta qt))/(alpha eta + beta)
+  
+	w = - ( t(M)%*%(u + alpha*(M%*%q - x)) + (v - beta*y - alpha*eta*q) )/(alpha*eta + beta)
+	
+	q[B==1] = (w[which(B==1)]+sqrt(w[which(B==1)]^2+4/(alpha*eta + beta)))/2
+	q[B==0] = ((w[which(B==0)]+1/(1-tau))-sqrt((w[which(B==0)]-1/(1-tau))^2+4/(alpha*eta+beta)))/2
+	q[q<eps] = eps
+	q[q>1] = 1
+	q
+}
+
+x_update = function(B, M, tau,eps,q,x,y,u,v,alpha,gamma,beta, eta, projection){
+	# Proj_Mset (M q + u/alpha)
+	x = projection(M%*%q + u/alpha) 
+}
+
+y_update = function(B, M, tau,eps,q,x,y,u,v,alpha,gamma,beta, eta){
+	# Prof_B (q + v/beta)
+	# where B = {sum_i B[i]/y[i]<= gamma}
+	y = q + v/beta
+	y[which(B==1)] = inverse_sum_prox((q+v/beta)[which(B==1)], gamma)
+	y
+}
+
+u_update = function(B, M, tau,eps,q,x,y,u,v,alpha,gamma,beta, eta){
+	u = u + alpha * (M%*%q -x)
+	u
+}
+
+v_update = function(B, M, tau,eps,q,x,y,u,v,alpha,gamma,beta, eta){
+	v = v + beta * (q-y)
+	v
+}
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FMRI example
+
+```{r}
+paired_t_test = function(X1, X2){
+## basic paired test
+  #return p value
+  
+    n = dim(X1)[1] # X1 & X2 are vectors of length n
+    Diff = X1 - X2
+    avg_D = colMeans(Diff)
+    var_D = colSums((Diff - matrix(1, n, 1)%*%avg_D)^2) / (n-1)
+    t_stat = abs(avg_D)/sqrt(var_D/n)
+    p_val = (1-pt(t_stat, df = n-1))*2    
+    p_val
+  
+    }
+
+```
+
+
+```{r}
+
+fMRI_get_data_and_pvals = function(data_downloaded = FALSE){
+	
+	if(!require(R.matlab)){
+	}
+	library("R.matlab")
+	
+	### Download CMU StarPlus fMRI data (subject 04847) from web
+	if (!data_downloaded){
+    		download.file(url = "http://www.cs.cmu.edu/afs/cs.cmu.edu/project/theo-81/www/data-starplus-04847-v7.mat", destfile = "./fMRI_data.mat")
+	}
+	
+	### Read "meta" and "data" from data-starplus-04847-v7.mat:
+	Subject = readMat("./fMRI_data.mat")
+	n = Subject$meta[[3]] # number of voxels = 4698
+	voxel_coords = Subject$meta[[1]] # 3D coordinates of each voxel = n-by-3 matrix
+	
+	### organize labels of each voxel into the Regions Of Interest (ROIs)
+	ROI_names = rep("0", 24)  
+	for (i in 1:24){
+		ind = c(1:3,5:25)[i] # ROI #4 , called 'LIPG', is not assigned to any voxel
+		ROI_names[i] = Subject$meta[[16]][[1+3*(ind-1)]]
+	}
+	
+	ROI_voxels = list() # ROI_voxels[[i]] contains voxel numbers (1 - 4698) of each voxel in ROI #i
+	ROI_labels = rep(0,n) # ROI_labels[i] is the ROI label of voxel #i
+	for(i in 1:n){
+		which_ROI = which(ROI_names == toString(Subject$meta[[17]][[i]][[1]]))
+		if(length(which_ROI)>0){
+			ROI_labels[i] = which_ROI
+		}
+	}
+
+	# remove voxels which are not assigned to an ROI
+	remove_voxels = which(ROI_labels==0)
+	n = n - length(remove_voxels)
+	ROI_labels = ROI_labels[-remove_voxels]
+	voxel_coords = voxel_coords[-remove_voxels,]
+	
+	### Process the activity data
+	# Find which trials have Picture (P) phase first, Sentence (S) phase second
+	trials = which((Subject$info[1,,] > 1) & (Subject$info[14,,] == "P"))
+	
+	# Get the average activity levels recorded in each of the selected trials, for the P & S phases
+	P_act = S_act = matrix(0, length(trials), n)
+	for (i in 1:length(trials)){
+		  P_act[i,] = colMeans(Subject$data[[trials[i]]][[1]][1:16,-remove_voxels]) # time 1-16 = P phase
+	    S_act[i,] = colMeans(Subject$data[[trials[i]]][[1]][17:32,-remove_voxels]) # time 17-32 = S phase
+	}
+	### Compute p-values via a paired t-test
+	pvals = matrix(paired_t_test(P_act, S_act), n, 1)  
+	
+	output = list()
+	output$P_act = P_act
+	output$S_act = S_act
+	output$pvals = pvals
+	output$ROI_names = ROI_names
+	output$ROI_labels = ROI_labels
+	output$voxel_coords = voxel_coords
+	output
+}
+```
+
+
+
+```{r}
+#####################################################################################
+## set up plotting functions for fMRI data example
+#####################################################################################
+
+matrix_for_slice_RGB = function(pixel_coords, pixel_RGB,background_black=FALSE){
+	# returns matrix to plot 64-by-64 slices of brain with RGB color specification
+	# pixel_coords is n-by-2 coordinates, pixel_coords[i,] is in {1..64}-by-{1..64}
+	# pixel_RGB is n-by-4 with row i specifying the RGB color for pixel i (normalized to [0,1])
+	# returns in RGB format (normalized to [0,1])
+	if(background_black){output = array(0,c(64,64,3))}else{output = array(1,c(64,64,3))}
+	for(i in 1:dim(pixel_coords)[1]){
+		output[pixel_coords[i,1],pixel_coords[i,2],] = pixel_RGB[i,]
+	}
+	output
+}
+
+matrix_for_slice_BW = function(pixel_coords,pixel_BW,background_black=FALSE){
+	# returns matrix to plot 64-by-64 slices of brain with CMYK color specification
+	# pixel_coords is n-by-2 coordinates, pixel_coords[i,] is in {1..64}-by-{1..64}
+	# pixel_BW is n-by-1 with entry i specifying grayscale value for pixel i in [0,1] (0 = black)
+	# returns in grayscale (black = 0)
+	if(background_black){output = matrix(0,64,64)}else{output = matrix(1,64,64)}
+	for(i in 1:dim(pixel_coords)[1]){
+		output[pixel_coords[i,1],pixel_coords[i,2]] = pixel_BW[i]
+	}
+	output
+}
+
+create_fMRI_results_image = function(output,qhat,BH_Res,Storey_Res,SABHA_Res,filename){
+	gap_h = 10; gap_v = 0 # horizontal and vertical gaps around each slice
+	image_matrix = array(1,c(8*(64+2*gap_v),8*(64+2*gap_h),3))
+	# from top to bottom: 8 slices of the brain
+	# from left to right: ROIs; P data; S data; p-values; q-hat; BH; Storey; SABHA
+	
+	# ROIs
+	set.seed(1)
+	RGB_ROIs = matrix(runif(24*3),24,3)
+	for(slice in 1:8){
+		which_voxels = which(output$voxel_coords[,3]==slice)
+		x0 = gap_h; y0 = gap_v + (8-slice)*(64+2*gap_v)
+		pixel_RGB = matrix(0,length(which_voxels),3)
+		for(i in 1:length(which_voxels)){
+			pixel_RGB[i,] = RGB_ROIs[output$ROI_labels[which_voxels[i]],]
+		}
+		image_matrix_temp = matrix_for_slice_RGB(output$voxel_coords[which_voxels,1:2],pixel_RGB)
+		for(i in 1:3){
+			image_matrix[y0+(64:1),x0+(1:64),i] = t(image_matrix_temp[,,i])
+		}
+	}
+	
+	# P data & S data
+	image_matrix[,64+2*gap_h+(1:(2*(64+2*gap_h))),] = 0 # black background
+	for(slice in 1:8){
+		which_voxels = which(output$voxel_coords[,3]==slice)
+		x0_P = 64+2*gap_h+ gap_h; x0_S = 2*(64+2*gap_h)+ gap_h; y0 = gap_v + (8-slice)*(64+2*gap_v)
+		Prange = range(colMeans(output$P_act)); Srange = range(colMeans(output$S_act))
+		pixel_BW_P = (colMeans(output$P_act[,which_voxels])-Prange[1])/(Prange[2]-Prange[1])
+		pixel_BW_S = (colMeans(output$S_act[,which_voxels])-Srange[1])/(Srange[2]-Srange[1])
+		for(i in 1:3){
+			image_matrix[y0+(64:1),x0_P+(1:64),i] = t(matrix_for_slice_BW(output$voxel_coords[which_voxels,1:2],pixel_BW_P,background_black=TRUE))
+			image_matrix[y0+(64:1),x0_S+(1:64),i] = t(matrix_for_slice_BW(output$voxel_coords[which_voxels,1:2],pixel_BW_S,background_black=TRUE))
+		}
+	}
+	
+	# p-values and qhat
+	for(slice in 1:8){
+		which_voxels = which(output$voxel_coords[,3]==slice)
+		x0_pvals = 3*(64+2*gap_h)+ gap_h; x0_qhat = 4*(64+2*gap_h)+ gap_h; y0 = gap_v + (8-slice)*(64+2*gap_v)
+		for(i in 1:3){
+			image_matrix[y0+(64:1),x0_pvals+(1:64),i] = t(matrix_for_slice_BW(output$voxel_coords[which_voxels,1:2],output$pvals[which_voxels]))
+			image_matrix[y0+(64:1),x0_qhat+(1:64),i] = t(matrix_for_slice_BW(output$voxel_coords[which_voxels,1:2],qhat[which_voxels]))
+		}
+	}
+	
+	image_matrix[,x0_qhat+(64+gap_h)+(0:1),] = 0
+	
+	# BH, Storey-BH, SABHA results
+	for(slice in 1:8){
+		which_voxels = which(output$voxel_coords[,3]==slice)
+		x0_BH = 5*(64+2*gap_h)+ gap_h; x0_Storey = 6*(64+2*gap_h)+ gap_h; x0_SABHA = 7*(64+2*gap_h)+ gap_h; y0 = gap_v + (8-slice)*(64+2*gap_v)
+		for(i in 1:3){
+			image_matrix[y0+(64:1),x0_BH+(1:64),i] = t(matrix_for_slice_BW(output$voxel_coords[which_voxels,1:2],1 - BH_Res[which_voxels]))
+			image_matrix[y0+(64:1),x0_Storey+(1:64),i] = t(matrix_for_slice_BW(output$voxel_coords[which_voxels,1:2],1 - Storey_Res[which_voxels]))
+			image_matrix[y0+(64:1),x0_SABHA+(1:64),i] = t(matrix_for_slice_BW(output$voxel_coords[which_voxels,1:2],1 - SABHA_Res[which_voxels]))
+		}
+	}
+	
+	col = rgb(image_matrix[,,1],image_matrix[,,2],image_matrix[,,3])
+	dim(col) = dim(image_matrix[,,1])
+	if(!require(grid)){
+		install.packages("grid")
+	}
+	library(grid)
+	
+	pdf(filename,8,6)
+	
+	par(mar=c(0,0,2,0))
+	plot(0:1,0:1,type='n',axes=FALSE,xlab='',ylab='',main='fMRI data: results')
+	grid.raster(col, interpolate=FALSE, x=0.5, y=0.52, width=0.92, height = 0.84)
+	text(0.5/8,0.01,'(a) ROIs')
+	text(2/8,0.01,'(b) Data')
+	text(1.5/8,0.05,'Picture')
+	text(2.5/8,0.05,'Sentence')
+	text(3.5/8,0.01,'(c) p-values')
+	text(4.5/8,0.01,expression(paste('(d) ',widehat(q))))
+	text(6.5/8,0.01,'(e) Results')
+	text(5.5/8,0.05,'BH')
+	text(6.5/8,0.05,'Storey-BH')
+	text(7.5/8,0.05,'SABHA')
+	
+	dev.off()
+}
+
+create_fMRI_ROI_barplot = function(ROI_names,avg_per_ROI,filename){
+	pdf(filename,10,4)
+	ord = order(avg_per_ROI[,1],decreasing=TRUE)
+  cols = c('grey','blue','green','orange')	
+  par(mar = c (5,5,2,2))
+	barplot(t(avg_per_ROI[ord,]),beside=TRUE,col=cols,names=ROI_names[ord],las=2,ylim=c(0,1),main='fMRI data: discoveries by ROI')
+	legend('topright', c(expression(paste(widehat(q), " for the ROI")),"BH", "Storey-BH", "SABHA"), cex=1, bty = 'n', fill=cols)
+	dev.off()
+}
+
+
+```
+
+
+
+
+```{r}
+
+
+
+
+
+
+	
+	
+#####################################################################################
+## run fMRI data example
+#####################################################################################
+
+alpha = 0.2 # target FDR level
+tau = 0.5; eps = 0.1 # parameters for SABHA
+thr = 0.5 # parameter for Storey-BH
+ADMM_params = c(10^2, 10^3, 2, 5000, 1e-3) # alpha_ADMM,beta,eta,max_iters,converge_thr
+
+output = fMRI_get_data_and_pvals()
+# if data is already downloaded:
+# output = fMRI_get_data_and_pvals(data_downloaded=TRUE)
+n = length(output$pvals)
+
+### set up the three methods
+BH_method = function(pvals,alpha){
+	khat=max(c(0,which(sort(pvals)<=alpha*(1:length(pvals))/length(pvals))))
+	which(pvals<=alpha*khat/length(pvals))
+}
+
+Storey_method = function(pvals,alpha,thr){
+	est_proportion_nulls=min(1,mean(pvals>thr)/(1-thr))
+	pvals[pvals>thr] = Inf
+	khat=max(c(0,which(sort(pvals)<=alpha/est_proportion_nulls*(1:length(pvals))/length(pvals))))
+	which(pvals<=alpha/est_proportion_nulls*khat/length(pvals))
+}
+	
+SABHA_method = function(pvals, qhat, alpha, tau){
+	# Use the original, or estimated q as input
+	pvals[pvals>tau] = Inf
+	khat=max(c(0,which(sort(qhat*pvals)<=alpha*(1:length(pvals))/length(pvals))))
+    which(qhat*pvals<=alpha*khat/length(pvals))
+}
+
+source('All_q_est_functions.R')
+
+# gather results
+BH_Res = Storey_Res = SABHA_Res = rep(0,n)
+BH_Res[BH_method(output$pvals, alpha)] = 1
+Storey_Res[Storey_method(output$pvals, alpha, thr)] = 1
+qhat = Solve_q_block(output$pvals,tau,eps,output$ROI_labels,ADMM_params)
+SABHA_Res[SABHA_method(output$pvals,qhat,alpha,tau)] = 1
+
+num_discoveries = c(sum(BH_Res),sum(Storey_Res),sum(SABHA_Res))
+names(num_discoveries) = c('BH','Storey-BH','SABHA')
+print(num_discoveries)
+
+# plot all results
+create_fMRI_results_image(output,qhat,BH_Res,Storey_Res,SABHA_Res,'fMRI_results.pdf')
+
+
+avg_per_ROI = matrix(0,24,4) 
+# avg_per_ROI[i,1] = avg qhat value in ROI i
+# avg_per_ROI[i,2:4] = proportion of discoveries made in ROI i by each method
+# (2 = BH, 3 = Storey-BH, 4 = SABHA)
+for(i in 1:24){
+	avg_per_ROI[i,1] = mean(qhat[which(output$ROI_labels==i)])
+	avg_per_ROI[i,2] = mean(BH_Res[which(output$ROI_labels==i)])
+	avg_per_ROI[i,3] = mean(Storey_Res[which(output$ROI_labels==i)])
+	avg_per_ROI[i,4] = mean(SABHA_Res[which(output$ROI_labels==i)])
+}
+
+# plot number of discoveries per ROI
+create_fMRI_ROI_barplot(output$ROI_names,avg_per_ROI,'fMRI_ROI_barplot.pdf')
+
+
+```
+

@@ -51,4 +51,3 @@ inspect(sort(arulesB, by="confidence", decreasing=TRUE))
 
 ```
 wyniki są bardzo podobne w przypadku tego zbioru danych
-

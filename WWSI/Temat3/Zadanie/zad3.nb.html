@@ -222,29 +222,13 @@ pre code {
 <p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Ctrl+Shift+Enter</em>. Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by pressing <em>Ctrl+Alt+I</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5mMTAgPC0gcmVhZF9jc3YoXCJleDNzdHVkZW50cy9mMTAuY3N2XCIsIGNvbF9uYW1lcz1GQUxTRSApXG5gYGAifQ== -->
+<pre class="r"><code>library(tidyverse)
+f10 &lt;- read_csv(&quot;ex3students/f10.csv&quot;, col_names=FALSE )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxuLS0gQXR0YWNoaW5nIHBhY2thZ2VzIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gdGlkeXZlcnNlIDEuMy4wIC0tXG52IGdncGxvdDIgMy4zLjMgICAgIHYgcHVycnIgICAwLjMuNFxudiB0aWJibGUgIDMuMC42ICAgICB2IGRwbHlyICAgMS4wLjRcbnYgdGlkeXIgICAxLjEuMiAgICAgdiBzdHJpbmdyIDEuNC4wXG52IHJlYWRyICAgMS40LjAgICAgIHYgZm9yY2F0cyAwLjUuMVxuLS0gQ29uZmxpY3RzIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gdGlkeXZlcnNlX2NvbmZsaWN0cygpIC0tXG54IGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbnggZHBseXI6OmxhZygpICAgIG1hc2tzIHN0YXRzOjpsYWcoKVxuIn0= -->
-<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
-  method         from
-  print.tbl_lazy     
-  print.tbl_sql      
--- Attaching packages ---------------------------------------------------------------------------------------------------------------- tidyverse 1.3.0 --
-v ggplot2 3.3.3     v purrr   0.3.4
-v tibble  3.0.6     v dplyr   1.0.4
-v tidyr   1.1.2     v stringr 1.4.0
-v readr   1.4.0     v forcats 0.5.1
--- Conflicts ------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
-x dplyr::filter() masks stats::filter()
-x dplyr::lag()    masks stats::lag()</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZjEwIDwtIHJlYWRfY3N2KFwiZXgzc3R1ZGVudHMvZjEwLmNzdlwiLCBjb2xfbmFtZXM9RkFMU0UgKVxuYGBgIn0= -->
-<pre class="r"><code>f10 &lt;- read_csv(&quot;ex3students/f10.csv&quot;, col_names=FALSE )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG4tLSBDb2x1bW4gc3BlY2lmaWNhdGlvbiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbmNvbHMoXG4gIFgxID0gY29sX2NoYXJhY3RlcigpXG4pXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4tLSBDb2x1bW4gc3BlY2lmaWNhdGlvbiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5jb2xzKFxuICBYMSA9IGNvbF9jaGFyYWN0ZXIoKVxuKVxuIn0= -->
 <pre><code>
--- Column specification ---------------------------------------------------------------------------------------------------------------------------------
+-- Column specification -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 cols(
   X1 = col_character()
 )</code></pre>
@@ -252,9 +236,9 @@ cols(
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuem9vIDwtIHJlYWRfY3N2KFwiZXgzc3R1ZGVudHMvem9vLmNzdlwiKVxuYGBgIn0= -->
 <pre class="r"><code>zoo &lt;- read_csv(&quot;ex3students/zoo.csv&quot;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG4tLSBDb2x1bW4gc3BlY2lmaWNhdGlvbiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbmNvbHMoXG4gIGhhaXIgPSBjb2xfZG91YmxlKCksXG4gIGZlYXRoZXJzID0gY29sX2RvdWJsZSgpLFxuICBlZ2dzID0gY29sX2RvdWJsZSgpLFxuICBtaWxrID0gY29sX2RvdWJsZSgpLFxuICBhaXJib3JuZSA9IGNvbF9kb3VibGUoKSxcbiAgYXF1YXRpYyA9IGNvbF9kb3VibGUoKSxcbiAgcHJlZGF0b3IgPSBjb2xfZG91YmxlKCksXG4gIHRvb3RoZWQgPSBjb2xfZG91YmxlKCksXG4gIGJhY2tib25lID0gY29sX2RvdWJsZSgpLFxuICBicmVhdGhlcyA9IGNvbF9kb3VibGUoKSxcbiAgdmVub21vdXMgPSBjb2xfZG91YmxlKCksXG4gIGZpbnMgPSBjb2xfZG91YmxlKCksXG4gIGxlZ3MgPSBjb2xfZG91YmxlKCksXG4gIHRhaWwgPSBjb2xfZG91YmxlKCksXG4gIGRvbWVzdGljID0gY29sX2RvdWJsZSgpLFxuICBjYXRzaXplID0gY29sX2RvdWJsZSgpXG4pXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4tLSBDb2x1bW4gc3BlY2lmaWNhdGlvbiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5jb2xzKFxuICBoYWlyID0gY29sX2RvdWJsZSgpLFxuICBmZWF0aGVycyA9IGNvbF9kb3VibGUoKSxcbiAgZWdncyA9IGNvbF9kb3VibGUoKSxcbiAgbWlsayA9IGNvbF9kb3VibGUoKSxcbiAgYWlyYm9ybmUgPSBjb2xfZG91YmxlKCksXG4gIGFxdWF0aWMgPSBjb2xfZG91YmxlKCksXG4gIHByZWRhdG9yID0gY29sX2RvdWJsZSgpLFxuICB0b290aGVkID0gY29sX2RvdWJsZSgpLFxuICBiYWNrYm9uZSA9IGNvbF9kb3VibGUoKSxcbiAgYnJlYXRoZXMgPSBjb2xfZG91YmxlKCksXG4gIHZlbm9tb3VzID0gY29sX2RvdWJsZSgpLFxuICBmaW5zID0gY29sX2RvdWJsZSgpLFxuICBsZWdzID0gY29sX2RvdWJsZSgpLFxuICB0YWlsID0gY29sX2RvdWJsZSgpLFxuICBkb21lc3RpYyA9IGNvbF9kb3VibGUoKSxcbiAgY2F0c2l6ZSA9IGNvbF9kb3VibGUoKVxuKVxuIn0= -->
 <pre><code>
--- Column specification ---------------------------------------------------------------------------------------------------------------------------------
+-- Column specification -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 cols(
   hair = col_double(),
   feathers = col_double(),
@@ -283,6 +267,9 @@ cols(
 <pre class="r"><code>numbs &lt;- flatten_dbl(map(f10$X1, parse_number))
 hist(numbs)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-plot-begin eyJoZWlnaHQiOjQzMi42MzI5LCJ3aWR0aCI6NzAwLCJzaXplX2JlaGF2aW9yIjowLCJjb25kaXRpb25zIjpbXX0= -->
+<p><img src="data:image/png;base64,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" /></p>
+<!-- rnb-plot-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -299,11 +286,35 @@ hist(numbs)</code></pre>
 <p>Plik “zoo.csv” zawiera zmienne opisujące 7 typów zwierząt: ssaki, ryby, ptaki, bezkręgowce, owady, płazy i gady. Wyznaczyć grupy w zbiorze danych “zoo.csv” używając algorytmu kśrednich. Porównać otrzymane wyniki ze znaną klasyfikacją dostępną w pliku “zoo_full.xlsx” (w ostatniej kolumnie “type”). Które typy zwierząt były najczęściej mylone?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5rbWVhbnMoem9vLCBjZW50ZXJzID0gNylcblxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5rbWVhbnMoem9vLCBjZW50ZXJzID0gNylcbmBgYCJ9 -->
 <pre class="r"><code>
-kmeans(zoo, centers = 7)
-</code></pre>
+kmeans(zoo, centers = 7)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiSy1tZWFucyBjbHVzdGVyaW5nIHdpdGggNyBjbHVzdGVycyBvZiBzaXplcyA3LCAzMSwgOCwgMTIsIDYsIDE0LCAyM1xuXG5DbHVzdGVyIG1lYW5zOlxuICAgICAgICBoYWlyIGZlYXRoZXJzICAgICAgIGVnZ3MgICAgICBtaWxrICBhaXJib3JuZSAgICBhcXVhdGljICBwcmVkYXRvciAgIHRvb3RoZWQgYmFja2JvbmUgIGJyZWF0aGVzIHZlbm9tb3VzICAgICAgZmlucyAgICAgbGVncyAgICAgICB0YWlsICAgZG9tZXN0aWMgICAgY2F0c2l6ZVxuMSAxLjAwMDAwMDAwICAgICAgICAwIDAuMDAwMDAwMDAgMS4wMDAwMDAwIDAuMjg1NzE0MyAwLjE0Mjg1NzE0IDAuMjg1NzE0MyAxLjAwMDAwMDAgMS4wMDAwMDAgMS4wMDAwMDAwIDAuMDAwMDAwIDAuMTQyODU3MSAyLjAwMDAwMCAwLjcxNDI4NTcxIDAuMTQyODU3MTQgMC41NzE0Mjg1N1xuMiAxLjAwMDAwMDAwICAgICAgICAwIDAuMDMyMjU4MDYgMS4wMDAwMDAwIDAuMDAwMDAwMCAwLjA2NDUxNjEzIDAuNTQ4Mzg3MSAwLjk2Nzc0MTkgMS4wMDAwMDAgMS4wMDAwMDAwIDAuMDAwMDAwIDAuMDAwMDAwMCA0LjAwMDAwMCAwLjkwMzIyNTgxIDAuMjI1ODA2NDUgMC44MDY0NTE2MVxuMyAwLjAwMDAwMDAwICAgICAgICAwIDEuMDAwMDAwMDAgMC4wMDAwMDAwIDAuMDAwMDAwMCAwLjc1MDAwMDAwIDAuNzUwMDAwMCAwLjYyNTAwMDAgMC43NTAwMDAgMC43NTAwMDAwIDAuMTI1MDAwIDAuMDAwMDAwMCA0LjEyNTAwMCAwLjM3NTAwMDAwIDAuMDAwMDAwMDAgMC4xMjUwMDAwMFxuNCAwLjMzMzMzMzMzICAgICAgICAwIDAuOTE2NjY2NjcgMC4wMDAwMDAwIDAuNTAwMDAwMCAwLjI1MDAwMDAwIDAuNDE2NjY2NyAwLjAwMDAwMDAgMC4wMDAwMDAgMC43NTAwMDAwIDAuMjUwMDAwIDAuMDAwMDAwMCA2LjMzMzMzMyAwLjA4MzMzMzMzIDAuMDgzMzMzMzMgMC4wODMzMzMzM1xuNSAwLjAwMDAwMDAwICAgICAgICAxIDEuMDAwMDAwMDAgMC4wMDAwMDAwIDAuODMzMzMzMyAxLjAwMDAwMDAwIDAuNjY2NjY2NyAwLjAwMDAwMDAgMS4wMDAwMDAgMS4wMDAwMDAwIDAuMDAwMDAwIDAuMDAwMDAwMCAyLjAwMDAwMCAxLjAwMDAwMDAwIDAuMDAwMDAwMDAgMC4zMzMzMzMzM1xuNiAwLjAwMDAwMDAwICAgICAgICAxIDEuMDAwMDAwMDAgMC4wMDAwMDAwIDAuNzg1NzE0MyAwLjAwMDAwMDAwIDAuMzU3MTQyOSAwLjAwMDAwMDAgMS4wMDAwMDAgMS4wMDAwMDAwIDAuMDAwMDAwIDAuMDAwMDAwMCAyLjAwMDAwMCAxLjAwMDAwMDAwIDAuMjE0Mjg1NzEgMC4yODU3MTQyOVxuNyAwLjA0MzQ3ODI2ICAgICAgICAwIDAuODI2MDg2OTYgMC4xMzA0MzQ4IDAuMDAwMDAwMCAwLjc4MjYwODcwIDAuNzM5MTMwNCAwLjgyNjA4NzAgMC44MjYwODcgMC4zMDQzNDc4IDAuMTczOTEzIDAuNjk1NjUyMiAwLjAwMDAwMCAwLjc4MjYwODcwIDAuMDQzNDc4MjYgMC4zMDQzNDc4M1xuXG5DbHVzdGVyaW5nIHZlY3RvcjpcbiAgWzFdIDIgMiA3IDIgMiAyIDIgNyA3IDIgMiA2IDcgNyAzIDQgNiAyIDcgNyA2IDUgMiA2IDQgMyAzIDEgMiAxIDQgMiAxIDUgNyAyIDIgNiA3IDQgNCA2IDQgNiAyIDIgNCAyIDIgMiAyIDQgMyA0IDIgMiA2IDYgNSA2IDcgNyA3IDIgMiAyIDcgMiAyIDIgMiA2IDQgNyA3IDEgNyA3IDUgNSA3IDcgNyA2IDEgMyA3IDUgNCAzIDMgMyA3IDEgMiA2IDEgNCAyIDdcblsxMDFdIDZcblxuV2l0aGluIGNsdXN0ZXIgc3VtIG9mIHNxdWFyZXMgYnkgY2x1c3RlcjpcblsxXSAgOC41NzE0MjkgMjQuNDUxNjEzIDEyLjM3NTAwMCAyNS42NjY2NjcgIDMuNTAwMDAwIDEwLjc4NTcxNCA0NC42MDg2OTZcbiAoYmV0d2Vlbl9TUyAvIHRvdGFsX1NTID0gIDgxLjUgJSlcblxuQXZhaWxhYmxlIGNvbXBvbmVudHM6XG5cblsxXSBcImNsdXN0ZXJcIiAgICAgIFwiY2VudGVyc1wiICAgICAgXCJ0b3Rzc1wiICAgICAgICBcIndpdGhpbnNzXCIgICAgIFwidG90LndpdGhpbnNzXCIgXCJiZXR3ZWVuc3NcIiAgICBcInNpemVcIiAgICAgICAgIFwiaXRlclwiICAgICAgICAgXCJpZmF1bHRcIiAgICAgIFxuIn0= -->
+<pre><code>K-means clustering with 7 clusters of sizes 7, 31, 8, 12, 6, 14, 23
+
+Cluster means:
+        hair feathers       eggs      milk  airborne    aquatic  predator   toothed backbone  breathes venomous      fins     legs       tail   domestic    catsize
+1 1.00000000        0 0.00000000 1.0000000 0.2857143 0.14285714 0.2857143 1.0000000 1.000000 1.0000000 0.000000 0.1428571 2.000000 0.71428571 0.14285714 0.57142857
+2 1.00000000        0 0.03225806 1.0000000 0.0000000 0.06451613 0.5483871 0.9677419 1.000000 1.0000000 0.000000 0.0000000 4.000000 0.90322581 0.22580645 0.80645161
+3 0.00000000        0 1.00000000 0.0000000 0.0000000 0.75000000 0.7500000 0.6250000 0.750000 0.7500000 0.125000 0.0000000 4.125000 0.37500000 0.00000000 0.12500000
+4 0.33333333        0 0.91666667 0.0000000 0.5000000 0.25000000 0.4166667 0.0000000 0.000000 0.7500000 0.250000 0.0000000 6.333333 0.08333333 0.08333333 0.08333333
+5 0.00000000        1 1.00000000 0.0000000 0.8333333 1.00000000 0.6666667 0.0000000 1.000000 1.0000000 0.000000 0.0000000 2.000000 1.00000000 0.00000000 0.33333333
+6 0.00000000        1 1.00000000 0.0000000 0.7857143 0.00000000 0.3571429 0.0000000 1.000000 1.0000000 0.000000 0.0000000 2.000000 1.00000000 0.21428571 0.28571429
+7 0.04347826        0 0.82608696 0.1304348 0.0000000 0.78260870 0.7391304 0.8260870 0.826087 0.3043478 0.173913 0.6956522 0.000000 0.78260870 0.04347826 0.30434783
+
+Clustering vector:
+  [1] 2 2 7 2 2 2 2 7 7 2 2 6 7 7 3 4 6 2 7 7 6 5 2 6 4 3 3 1 2 1 4 2 1 5 7 2 2 6 7 4 4 6 4 6 2 2 4 2 2 2 2 4 3 4 2 2 6 6 5 6 7 7 7 2 2 2 7 2 2 2 2 6 4 7 7 1 7 7 5 5 7 7 7 6 1 3 7 5 4 3 3 3 7 1 2 6 1 4 2 7
+[101] 6
+
+Within cluster sum of squares by cluster:
+[1]  8.571429 24.451613 12.375000 25.666667  3.500000 10.785714 44.608696
+ (between_SS / total_SS =  81.5 %)
+
+Available components:
+
+[1] &quot;cluster&quot;      &quot;centers&quot;      &quot;totss&quot;        &quot;withinss&quot;     &quot;tot.withinss&quot; &quot;betweenss&quot;    &quot;size&quot;         &quot;iter&quot;         &quot;ifault&quot;      </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Przeprowadzono ręczną analize pokazaną <a href="https://docs.google.com/spreadsheets/d/1HvvOR3xo5mwljiULf23ch3WIkJ8xcOlekf4rnxsNtbU/edit?usp=sharing" class="uri">https://docs.google.com/spreadsheets/d/1HvvOR3xo5mwljiULf23ch3WIkJ8xcOlekf4rnxsNtbU/edit?usp=sharing</a> i najczęstsze błędy są w klasie invertebrae</p>

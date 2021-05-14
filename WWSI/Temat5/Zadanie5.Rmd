@@ -102,30 +102,55 @@ Zbyt mała wartość misplit powoduje overfitting bo struktura jest zbyt skompli
 
 
 
-
-
  (1pkt) Dokonaj klasyfikacji nowych rekordów danych, podanych w pliku „new records.txt” przy użyciu drzewa
 decyzyjnego (utworzonego na podstawie całego zbioru danych) i algorytmu knn (działającego z całym zbiorem
 danych). Porównaj wyniki. 
 
 
-min Split 13 zostało dobrane na podstawie wykresu
-
+To samo co powyżej jedynie zwraca model
 ```{r}
+testingTreeReturnModel <- function(splitt) {
+d<-as.data.frame(d)
+nbreaks<-splitt
 
+folds <- cut(seq(1,nrow(d)),breaks=nbreaks,labels=FALSE)
+#function cut() divides a given range into intervals; the leftmost interval corresponds to level one, the next leftmost to level two and so on.
 
-# Trenujemy drzewo decyzyjne z sprawdzonym wcześniej optymalnym parametrem min Split
+av_err_rate<-double() #setting the initial value for average error rate
+i<-splitt
 
+  #Segement your data by fold using the which() function 
   test_indices <- which(folds==i,arr.ind=TRUE) #function which() segments the data by fold
   d.test <- d[test_indices,1:13]  #without class
   d.test.class<- d[test_indices,14]    #only class
   d.train <- d[-test_indices, 1:13]
   d.train.class <- d[-test_indices, 14]
 
-  model<-rpart(d.train.class ~Age +Sex +Cp+Trestbs+ Chol+FBS+Restecg+Restecg+Thalach+Exang+Exang+Oldpeak+Slope+Slope+Slope+Ca+Thal , data = d.train, method = "class",control=rpart.control(minsplit=13))
-  
-  
   #testujemy na zbiorze testowym i treningowym nasze drzewo decyzyjne
+
+model<-rpart(d.train.class ~Age +Sex +Cp+Trestbs+ Chol+FBS+Restecg+Restecg+Thalach+Exang+Exang+Oldpeak+Slope+Slope+Slope+Ca+Thal , data = d.train, method = "class",control=rpart.control(minsplit=minSpl))
+  
+model
+}
+```
+
+
+
+split dopbrany na podstawie wykresu = 13
+
+```{r}
+# Trenujemy drzewo decyzyjne z sprawdzonym wcześniej optymalnym parametrem min Split
+model <- testingTreeReturnModel(13)
+```
+
+
+
+
+
+```{r}
+
+
+#testujemy na zbiorze testowym i treningowym nasze drzewo decyzyjne
 newdata<-data.frame(Age=c(29.0, 77.0),
                     Sex =c( 0.0, 1.0),
                     Cp=c( 1.0, 4.0),

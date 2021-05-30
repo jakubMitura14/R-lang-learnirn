@@ -3,7 +3,9 @@ title: "Zadanie 5"
 output: html_notebook
 ---
 
-przydział 3_cleveland.csv
+przydział 
+
+3_cleveland.csv
 CART
 
 (2 pkt) Przeprowadzić indukcję drzewa decyzyjnego bez użycia języka R dla małego zbioru danych
@@ -143,49 +145,43 @@ split dopbrany na podstawie wykresu = 13
 model <- testingTreeReturnModel(13)
 ```
 
+```{r}
+summary(model)
+```
 
 
 
 
 ```{r}
-
-
 #testujemy na zbiorze testowym i treningowym nasze drzewo decyzyjne
-newdata<-data.frame(Age=c(29.0, 77.0),
-                    Sex =c( 0.0, 1.0),
-                    Cp=c( 1.0, 4.0),
-                    Trestbs= c( 94.0, 200.0),
-                    Chol=c( 126.0, 564.0),
-                    FBS=c( 0.0, 1.0 ),
-                    Restecg=c(0.0, 2.0),
-                    Thalach=c( 71.0, 202.0),
-                    Exang=c( 0.0, 1.0),
-                    Oldpeak=c( 0.0, 6.2),
-                    Slope=c( 1.0, 3.0),
-                    Ca=c( 0.0, 3.0),
-                    Thal=c( 3.0, 7.0)
-                    )
-  
-  
+newdata <- read_csv("Zadanie/data sets/newCleveland.csv")
 
   
 pred <- predict(model, newdata,type='class') 
 pred
   
 ```
+
 
 Więc powyżej mamy klasy przewidziane przez drzewo decyzyjne i teraz dla porównania to samo z knn
 
 
 ```{r}
+library(class)
+d.test <- newdata[,1:13]#musimy usunac ostatnia kolumne bo to ja algorytm ma się nauczyć ... 
+d.train <- d[,1:13]  # wszystkie indeksy poza  testowymi - grupa testowa
+d.train.class <- d[, 14]  # właściwa klasa dla grupy treningowej
+
 knn.result <- knn(d.train, d.test, d.train.class, k = 1) # uruchomienie algorytmu knn
 
-pred <- predict(model, newdata,type='class') 
-pred
+  
+knn.result  
+  
 
+```
 
 ```
 
 
-Jak widzimy wyniki są takie same
+Jak widzimy wyniki są nieco inne c0 c3 c1 dla knn i c0 c3 c0  dla drzewa decyzyjnego
 

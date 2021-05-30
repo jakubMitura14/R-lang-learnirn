@@ -17,6 +17,7 @@ x= calories, potass
 
 
 ```{r}
+library(tidyverse)
 d <- as.data.frame(read_csv("_data_sets/cereals.csv"))
 model<-lm(d$RATING ~ d$CALORIES) # lm() creates a linear model
 
@@ -48,7 +49,7 @@ predict(model, new, interval = "confidence",level=0.95)
 
 ```{r}
 
-plot(d$RATING,d$CALORIES) #creates a scatter plot
+plot(d$CALORIES,d$RATING) #creates a scatter plot
 abline(model,col='red') #adds the model line to the plot
 ```
 2. (2 pkt.) Wykorzystaj regresję wielokrotną do szacowania wartosci y na postawie wielu wartości x.

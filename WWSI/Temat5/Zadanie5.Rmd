@@ -148,6 +148,12 @@ model <- testingTreeReturnModel(13)
 ```{r}
 summary(model)
 ```
+```{r}
+library(rpart)
+library(rpart.plot)
+rpart.plot(model, extra = 106)
+
+```
 
 
 
